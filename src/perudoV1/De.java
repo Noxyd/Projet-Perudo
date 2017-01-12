@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class De {
 
-        //variables
+        //attributs
         int id_de;
         int valeur;
         
