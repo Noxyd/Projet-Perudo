@@ -1,16 +1,18 @@
 package perudoV1;
 
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Partie {
+public class Partie extends UnicastRemoteObject implements PartieInt {
 	
+	private static final long serialVersionUID = 1L;
 			//attributs
-			int id_partie;
-			Joueur joueurcourant;
-			ArrayList<Joueur> joueurs;
+			private int id_partie;
+			private Joueur joueurcourant;
+			private ArrayList<Joueur> joueurs;
 			
 			//constructeur
-			public Partie(int id, ArrayList<Joueur> map){
+			public Partie(int id, ArrayList<Joueur> map) throws java.rmi.RemoteException{
 				this.id_partie = id;
 				this.joueurcourant = null; //on met un joueur qui est creer plus haut 
 										//car au débbut on a pas vraiment de joueur avant tirage au sort.
@@ -18,19 +20,19 @@ public class Partie {
 			}	
 			
 			//methodes
-			public Joueur getJoueurcourant() {
+			public Joueur getJoueurcourant() throws java.rmi.RemoteException{
 				return joueurcourant;
 			}
 
-			public void setJoueurcourant(Joueur joueurcourant) {
+			public void setJoueurcourant(Joueur joueurcourant) throws java.rmi.RemoteException{
 				this.joueurcourant = joueurcourant;
 			}
 
-			public void ajouterJoueur(Joueur e){
+			public void ajouterJoueur(Joueur e)throws java.rmi.RemoteException{
 				joueurs.add(e);				
 			}
 			
-			public int getNombreJoueur() {
+			public int getNombreJoueur() throws java.rmi.RemoteException {
 				int nbjoueur = joueurs.size();
 				return nbjoueur;
 			}
