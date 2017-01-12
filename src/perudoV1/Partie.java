@@ -26,15 +26,12 @@ public class Partie {
 				this.joueurcourant = joueurcourant;
 			}
 
-			public void ajouterJoueur(){
-				
-				//joueurs.add(e);
-				
+			public void ajouterJoueur(Joueur e){
+				joueurs.add(e);				
 			}
 			
 			
 			public int getNombreJoueur() {
-				
 				int nbjoueur = joueurs.size();
 				return nbjoueur;
 			}
