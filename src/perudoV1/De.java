@@ -1,4 +1,4 @@
-package bin;
+package perudoV1;
 
 import java.util.Random;
 
