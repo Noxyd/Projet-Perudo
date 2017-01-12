@@ -30,7 +30,6 @@ public class Partie {
 				joueurs.add(e);				
 			}
 			
-			
 			public int getNombreJoueur() {
 				int nbjoueur = joueurs.size();
 				return nbjoueur;
