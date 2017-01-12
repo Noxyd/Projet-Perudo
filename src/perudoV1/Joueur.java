@@ -24,7 +24,7 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		this.de_joueur = de_joueur;
 	}
 
-
+	
 	//m�thodes	
 	public int getId_joueur() throws RemoteException  {
 		return id_joueur;
