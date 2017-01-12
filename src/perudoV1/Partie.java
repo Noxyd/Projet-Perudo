@@ -7,10 +7,10 @@ public class Partie {
 			//attributs
 			int id_partie;
 			Joueur joueurcourant;
-			ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
+			ArrayList<Joueur> joueurs;
 			
 			//constructeur
-			public Partie(int id, ArrayList map){
+			public Partie(int id, ArrayList<Joueur> map){
 				this.id_partie = id;
 				this.joueurcourant = null; //on met un joueur qui est creer plus haut 
 										//car au débbut on a pas vraiment de joueur avant tirage au sort.
