@@ -1,2 +1,2 @@
 # Projet-Perudo
-CrÃ©ation d'un Perudo en Java dans le cadre de STRI
+Création d'un Perudo en Java dans le cadre de STRI
