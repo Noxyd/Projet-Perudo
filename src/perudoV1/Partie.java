@@ -7,6 +7,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 	
 	private static final long serialVersionUID = 1L;
 			//attributs
+			@SuppressWarnings("unused")
 			private int id_partie;
 			private Joueur joueurcourant;
 			private ArrayList<Joueur> joueurs;
@@ -38,7 +39,9 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			}
 			
 	
-			
+			public String printHello(){
+				return "Hello";
+			}
 				
 
 }
