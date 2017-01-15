@@ -15,6 +15,8 @@ public class Run {
 			
 			Partie partie1 = new Partie(0, null);
 			Naming.rebind(url, (Remote) partie1);
+			
+			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
