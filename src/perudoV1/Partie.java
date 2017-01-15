@@ -39,7 +39,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			}
 			
 	
-			public String printHello(){
+			public String printHello()throws java.rmi.RemoteException{
 				return "Hello";
 			}
 				

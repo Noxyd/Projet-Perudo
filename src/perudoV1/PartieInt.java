@@ -9,5 +9,7 @@ public interface PartieInt extends java.rmi.Remote{
 	public void ajouterJoueur(Joueur e) throws java.rmi.RemoteException;
 	
 	public int getNombreJoueur() throws java.rmi.RemoteException;
+	
+	public String printHello()throws java.rmi.RemoteException;
 
 }
