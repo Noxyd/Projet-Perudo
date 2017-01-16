@@ -17,9 +17,11 @@ public class Run {
 		gm.liste_parties();
 		
 		//uniquement pour test
+		/*
 		int id_partie = gm.rejoindre("Sam");
 		
-		System.out.println("Vous avez rejoins la partie : "+id_partie);
+		System.out.println("Liste dans la partie "+id_partie+" :");
+		gm.liste_joueurs(id_partie);*/
 		//END
 	}
 	

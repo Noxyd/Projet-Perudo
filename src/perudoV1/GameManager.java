@@ -10,5 +10,6 @@ public interface GameManager extends Remote{
 	public void creer_partie() throws RemoteException;
 	public int genererID() throws RemoteException;
 	public void liste_parties() throws RemoteException;
+	public void liste_joueurs(int id_partie) throws RemoteException;
 	
 }

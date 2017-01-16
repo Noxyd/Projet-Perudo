@@ -69,8 +69,9 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 			
 		parties.put(id, new Partie());
 		
+		//uniquement pour les tests
 		System.out.println("Partie crée : "+ id);
-		System.out.println("Nb de joueurs : "+parties.get(id).joueurs.size());
+		
 	}
 	
 	public int genererID() throws RemoteException{
@@ -84,6 +85,11 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 		for(int key : parties.keySet()){
 			System.out.println(key);
 		}
+	}
+	
+	public void liste_joueurs(int id_partie) throws RemoteException{
+		Partie la_partie = parties.get(id_partie);
+		la_partie.listerJoueurs();
 	}
 
 }

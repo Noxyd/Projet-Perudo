@@ -1,5 +1,6 @@
 package perudoV1;
 
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			//@SuppressWarnings("unused")
 			//private int id_partie;
 			private int joueurcourant;
-			public ArrayList<Joueur> joueurs;
+			private ArrayList<Joueur> joueurs;
 			private boolean state; //indique l'�tat de la partie - en cours (true) ou salle d'attente (false)
 			
 			//constructeur
@@ -18,6 +19,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				//this.id_partie = id;
 				this.joueurcourant = 0; //on met un joueur qui est creer plus haut 
 										//car au débbut on a pas vraiment de joueur avant tirage au sort.
+				this.joueurs = new ArrayList<Joueur>();
 				//this.joueurs = map; //se remplie lors de l'arrivé des joueurs donc ici vide.
 			}	
 			
@@ -46,6 +48,11 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				return joueurs.size();
 			}
 			
+			public void listerJoueurs() throws RemoteException{
+				for(int i = 0; i<joueurs.size();i++){
+					System.out.println(joueurs.get(i).getPseudo());
+				}
+			}
 			
 
 }

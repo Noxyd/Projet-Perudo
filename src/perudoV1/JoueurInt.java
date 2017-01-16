@@ -2,7 +2,6 @@ package perudoV1;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public interface JoueurInt extends Remote {
 	public String getPseudo() throws RemoteException;
