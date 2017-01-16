@@ -2,14 +2,16 @@ package perudoV1;
 
 public interface PartieInt extends java.rmi.Remote{
 	
-	public Joueur getJoueurcourant() throws java.rmi.RemoteException;
+	public int getJoueurcourant() throws java.rmi.RemoteException;
 
-	public void setJoueurcourant(Joueur joueurcourant) throws java.rmi.RemoteException; 
+	public void setJoueurcourant(int joueurcourant) throws java.rmi.RemoteException; 
 
-	public void ajouterJoueur(Joueur e) throws java.rmi.RemoteException;
+	public void ajouterJoueur(String e) throws java.rmi.RemoteException;
 	
-	public int getNombreJoueur() throws java.rmi.RemoteException;
+	public int getNombreJoueurs() throws java.rmi.RemoteException;
 	
-	public String printHello()throws java.rmi.RemoteException;
+	public boolean getState() throws java.rmi.RemoteException;
+	
+	public void setState(boolean value) throws java.rmi.RemoteException;
 
 }

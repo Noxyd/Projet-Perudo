@@ -6,23 +6,37 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 public class Run {
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws RemoteException{
+		
+		GameManagerImpl gm = new GameManagerImpl();
+		
+		rmi_init(gm);
+			
+		gm.creer_partie();
+		
+		gm.liste_parties();
+		
+		//uniquement pour test
+		int id_partie = gm.rejoindre("Sam");
+		
+		System.out.println("Vous avez rejoins la partie : "+id_partie);
+		//END
+	}
+	
+	/* initialisation du RMI */
+	public static void rmi_init(GameManager obj){
 		try {
 			LocateRegistry.createRegistry(1099);
 			
 			String url ="rmi://localhost/Perudo";
 			
-			Test_RMIImpl le_test = new Test_RMIImpl();
+			Naming.rebind(url, obj);
 			
-			Naming.rebind(url, le_test);
+			System.out.println(obj.toString());
 			
-			System.out.println(le_test.toString());
-			
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }

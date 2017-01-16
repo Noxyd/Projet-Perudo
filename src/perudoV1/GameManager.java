@@ -5,6 +5,10 @@ import java.rmi.RemoteException;
 
 public interface GameManager extends Remote{
 
-	public String rejoindre() throws RemoteException;
+	public int rejoindre(String pseudo) throws RemoteException;
+	public int recherche_partie() throws RemoteException;
+	public void creer_partie() throws RemoteException;
+	public int genererID() throws RemoteException;
+	public void liste_parties() throws RemoteException;
 	
 }

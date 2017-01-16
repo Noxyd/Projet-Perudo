@@ -3,37 +3,28 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+@SuppressWarnings("serial")
 public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	
-	
-	/**
-	 * 
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
 	
 	//attributs
 	private int id_joueur;
 	private String pseudo;
 	private ArrayList<De> de_joueur;
-	int toto;
-	
+	private int index;
 		
 	//constructeur
-	public Joueur(int id_joueur, String pseudo, ArrayList<De> de_joueur) throws RemoteException {
+	public Joueur(String pseudo) throws RemoteException {
 		super();
-		this.id_joueur = id_joueur;
+		this.index = 0;
+		id_joueur = genererID();
 		this.pseudo = pseudo;
-		this.de_joueur = de_joueur;
+		this.de_joueur = null;
 	}
 
 
 	//methodes	
-
-	public int getId_joueur() throws RemoteException  {
-
-		return id_joueur;
-	}
 
 	public String getPseudo() throws RemoteException{
 		return pseudo;
@@ -44,9 +35,15 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	}
 
 
-	public ArrayList<De> getDe_joueur() throws RemoteException{
+	/*public ArrayList<De> getDe_joueur() throws RemoteException{
 		return de_joueur;
 	}
-	
+	*/
+	public int genererID() throws RemoteException{
+		
+		this.index += 1;
+		
+		return index;
+	}
 
 }
