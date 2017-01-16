@@ -11,6 +11,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			private int id_partie;
 			private Joueur joueurcourant;
 			private ArrayList<Joueur> joueurs;
+			private boolean state; //indique l'état de la partie - en cours (true) ou salle d'attente (false)
 			
 			//constructeur
 			public Partie(int id, ArrayList<Joueur> map) throws java.rmi.RemoteException{
@@ -42,6 +43,17 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			public String printHello()throws java.rmi.RemoteException{
 				return "Hello";
 			}
-				
+			
+			public boolean getState(){
+				return state;
+			}
+			
+			public void setState(boolean value){
+				state = value;
+			}
+			
+			public int getNombreJoueurs(){
+				return joueurs.size();
+			}
 
 }
