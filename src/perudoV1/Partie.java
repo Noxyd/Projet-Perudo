@@ -3,6 +3,8 @@ package perudoV1;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 
 @SuppressWarnings("serial")
 public class Partie extends UnicastRemoteObject implements PartieInt {
@@ -52,6 +54,69 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				for(int i = 0; i<joueurs.size();i++){
 					System.out.println(joueurs.get(i).getPseudo());
 				}
+			}
+			
+			public int getNombreDeTotal(){
+				int nbde = 0;				
+				Iterator<Joueur> it = joueurs.iterator();
+					while (it.hasNext()) {
+					       Joueur j = it.next();
+					       nbde =+ j.getDeTotal();
+					}
+				return nbde;
+			}
+			
+			
+			//ici avec les perudo
+			public int nombreDePerudo(int val){
+				int res = 0;
+				Iterator<Joueur> it = joueurs.iterator();
+					while (it.hasNext()) {
+					       Joueur j = it.next();
+					       res =+ j.getDeVal(val) + j.getDeVal(0);
+					}
+				return res;
+			}
+			
+
+			public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
+				
+				int nbDeVal = nombreDePerudo(val);
+				
+				switch (choixAnnoce) {
+				  case 1:		//il annonce menteur
+					  if(nbDeVal >= nb){
+						  j1.suppDe(1);
+					  }
+					  
+					  j2.suppDe(1);
+					  
+					  /*gerer le end game ou nouvelle manche
+					  .
+					  .
+					  .
+					  */
+				    break;
+				  case 2:		//il annnonce tout pile
+					  if(nbDeVal != nb){
+						  //System.out.println("perdu"); //pour tester
+						  j1.suppDe(1);
+					  }
+						
+					  j1.ajoutDe1();
+						  
+					  /*gerer le end game ou nouvelle manche
+					  .
+					  .
+					  .
+					  */
+				    break;
+				  case 3:		//il annonce mise
+					  	j1.mise(nb, val);	  	
+					break;
+				}
+				
+				
 			}
 			
 

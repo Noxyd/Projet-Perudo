@@ -13,6 +13,8 @@ public class Run {
 		rmi_init(gm);
 			
 		gm.creer_partie();
+		gm.creer_partie();
+		gm.creer_partie();
 		
 		gm.liste_parties();
 		
