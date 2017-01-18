@@ -2,7 +2,9 @@ package perudoV1;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("serial")
@@ -61,6 +63,28 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 		}
 		
 		return id_partie;
+	}
+	
+public void recherche_partie_list() throws RemoteException{
+		
+		//test permet de vérifier qu'une partie a été trouvé dans la Hashmap.
+		boolean test = false;
+		ArrayList<Partie> p_list = new ArrayList<Partie>();
+		int i = 0;
+		
+		for(int key : parties.keySet()){
+			//parties.get(key) retourne la valeur de la clé associé.
+			//true : la partie est en en cours || false : la salle d'attente est ouverte.
+			Partie current = parties.get(key);
+			System.out.println("recherche_partie OK : "+key);
+			if(current.getState() == false && test == false){
+				if(current.getNombreJoueurs() <= NBMAX_JOUEURS){
+					p_list.add(current);
+					i++;
+				}
+			}
+		}
+		System.out.println (p_list);
 	}
 	
 	public void creer_partie() throws RemoteException{
