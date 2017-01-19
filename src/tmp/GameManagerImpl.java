@@ -1,119 +1,119 @@
 package tmp;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+/**
+ * Classe GameManager.
+ * Permet de gérer des parties : créer, supprimer, naviguer dans la liste des parties.
+ * 
+ * @author Groupe Garcia, Lesaichot, Tavera - STRI
+ * 
+ */
 
 @SuppressWarnings("serial")
 public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 
-	private Map<Integer, Partie> parties;
-	private int index;
+	
+	
+	/* Attributs */
+	private Map<String, Partie> liste_parties;
+	
 	private final int NBMAX_JOUEURS = 6;
+	private final String BASE_URL = "rmi://localhost/";
 	
 	
+	
+	/* Constructeur */
+	
+	/**
+	 * Le constructeur permet de creer une hashmap contenant l'url (key) de la partie ainsi qu'une Partie (Object).
+	 * 
+	 * @throws RemoteException
+	 */
 	public GameManagerImpl() throws RemoteException {
 		super();
-		this.index = 0;
-		parties = new HashMap<Integer,Partie>();
+		liste_parties = new HashMap<String,Partie>();
 	}
-
-	/*
-	 * Permet à un client de rejoindre une partie.
+	
+	
+	
+	/* Méthodes */
+	
+	/**
+	 * Permet d'effectuer la recherche et l'attribution d'une partie.
+	 * Retourne l'url de la partie et effectue un rebind entre l'url et l'objet de type Partie.
+	 * 
+	 * @return String url
+	 * 
 	 */
-	public int rejoindre(String pseudo) throws RemoteException {
+	public String recherche_partie() throws RemoteException{
 		
-		int id_partie;
-		
-		Partie la_partie;
-		
-		id_partie = recherche_partie();
-		
-		la_partie = parties.get(id_partie);
-		
-		la_partie.ajouterJoueur(pseudo);
-		
-		return id_partie;
-	}
-
-	public int recherche_partie() throws RemoteException{
-		
+		String url = "none";
 		//test permet de vérifier qu'une partie a été trouvé dans la Hashmap.
 		boolean test = false;
-		int id_partie = 0;
 		
-		for(int key : parties.keySet()){
+		for(String key : liste_parties.keySet()){
 			//parties.get(key) retourne la valeur de la clé associé.
 			//true : la partie est en en cours || false : la salle d'attente est ouverte.
-			Partie current = parties.get(key);
-			System.out.println("recherche_partie OK : "+key);
+			Partie current = liste_parties.get(key);
+			
 			if(current.getState() == false && test == false){
 				if(current.getNombreJoueurs() <= NBMAX_JOUEURS){
-					id_partie = key;
+					url = BASE_URL+key;
+					try {
+						Naming.rebind(url, current);
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+					}
 					test = true;
 				}
 			}
 		}
-		
-		if(test == false){
-			id_partie = 0; //Pas de partie disponible
-		}
-		
-		return id_partie;
+				
+		return url;
 	}
 	
-public void recherche_partie_list() throws RemoteException{
-		
-		//test permet de vérifier qu'une partie a été trouvé dans la Hashmap.
-		boolean test = false;
-		ArrayList<Partie> p_list = new ArrayList<Partie>();
-		int i = 0;
-		
-		for(int key : parties.keySet()){
-			//parties.get(key) retourne la valeur de la clé associé.
-			//true : la partie est en en cours || false : la salle d'attente est ouverte.
-			Partie current = parties.get(key);
-			System.out.println("recherche_partie OK : "+key);
-			if(current.getState() == false && test == false){
-				if(current.getNombreJoueurs() <= NBMAX_JOUEURS){
-					p_list.add(current);
-					i++;
-				}
-			}
-		}
-		System.out.println (p_list);
-	}
-	
+	/**
+	 * Cette méthode permet de créer un nouvel objet de type Partie à l'intérieur de la hashmap.
+	 * On génere un id à cette partie ("perudo-" suivie de 5 caractères alpha-numériques). 
+	 * Cet id devient la key de l'objet.
+	 * 
+	 */
 	public void creer_partie() throws RemoteException{
 		
-		int id = genererID();
-			
-		parties.put(id, new Partie());
+		String id = "perudo-";
 		
-		//uniquement pour les tests
-		System.out.println("Partie crée : "+ id);
+		id += generer_chaine();
 		
+		//TODO Penser à vérifier que la chaine n'existe pas deja
+		
+		liste_parties.put(id, new Partie());
+		
+		System.out.println("Partie "+id+" crée.");
 	}
 	
-	public int genererID() throws RemoteException{
+	/**
+	 * Génère une chaine composée de 5 caratères alpha-numériques.
+	 * 
+	 * @return chaine
+	 */
+	public String generer_chaine(){
 		
-		this.index += 1;
-		
-		return index;
-	}
-	
-	public void liste_parties() throws RemoteException{
-		for(int key : parties.keySet()){
-			System.out.println(key);
-		}
-	}
-	
-	public void liste_joueurs(int id_partie) throws RemoteException{
-		Partie la_partie = parties.get(id_partie);
-		la_partie.listerJoueurs();
+		    String caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; 
+		    String chaine = "";
+		    
+		    for(int i = 0; i < 5; i++)
+		    {
+		       int j = (int)Math.floor(Math.random() * 62);
+		       chaine += caracteres.charAt(j);
+		    }
+		    
+		    return chaine;
 	}
 
 }

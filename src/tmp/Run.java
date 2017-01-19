@@ -1,6 +1,5 @@
 package tmp;
 
-
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -11,33 +10,24 @@ public class Run {
 		GameManagerImpl gm = new GameManagerImpl();
 		
 		rmi_init(gm);
-			
+		
+		//Création de 3 parties
 		gm.creer_partie();
 		gm.creer_partie();
 		gm.creer_partie();
 		
-		gm.liste_parties();
-		
-		//uniquement pour test
-		/*
-		int id_partie = gm.rejoindre("Sam");
-		
-		System.out.println("Liste dans la partie "+id_partie+" :");
-		gm.liste_joueurs(id_partie);*/
-		//END
+		//TEST Recherche d'une partie
+		String url = gm.recherche_partie();
+		System.out.println("\nurl : "+url);
 	}
 	
 	/* initialisation du RMI */
 	public static void rmi_init(GameManager obj){
 		try {
+			System.out.println("Démarrage du registre\n");
 			LocateRegistry.createRegistry(1099);
-			
-			String url ="rmi://localhost/Perudo";
-			
+			String url = "rmi://localhost:1099/gm";
 			Naming.rebind(url, obj);
-			
-			System.out.println(obj.toString());
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
