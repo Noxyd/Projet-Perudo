@@ -3,6 +3,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Scanner;
 
 @SuppressWarnings("serial")
 public class Joueur extends UnicastRemoteObject implements JoueurInt{
@@ -14,6 +15,7 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	private String pseudo;
 	private ArrayList<De> de_joueur;
 	private int index;
+	private int nbMise = 0, valMise = 0;
 		
 	//constructeur
 	public Joueur(String pseudo) throws RemoteException {
@@ -103,10 +105,37 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		}
 		
 	}
-
+	
 	public void mise(int nb, int val){
-
-		//gestion des mise ? à voir
+		this.nbMise = nb;
+		this.valMise = val;
+		
+	}
+	
+	//faire une boucle tant que sur le 100 pour assurer la victoire ;)
+	//faire un choix en chiffre, ex: 1 ou 2 ou 3 (ici on adapte à l'aide de l'entier i)
+	public int saisir_valeur(int i){
+		//i nous permet de connaitre le nombre de choix, 
+		//si i a la valeur 3 alors le joueur ne peux entrer que 1 ou 2 ou 3.
+		
+		int tabEntier[] = new int[i-1];
+		int j = 0;
+				
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Choix :");
+		int str = sc.nextInt();
+		System.out.println("Vous avez saisi : " + str);
+		
+		while (j!=(i-1)){
+			if(str != tabEntier[j]){
+				j++;
+			}
+			if(str == tabEntier[j]){
+				return tabEntier[j]; //retourn la valeur selectionnee par l'user
+			}
+		}
+		
+		return 100; //retourn 100 si erreur
 		
 	}
 

@@ -4,9 +4,6 @@ import java.rmi.RemoteException;
 
 public interface PartieInt extends java.rmi.Remote{
 	
-	public int getJoueurcourant() throws java.rmi.RemoteException;
-
-	public void setJoueurcourant(int joueurcourant) throws java.rmi.RemoteException; 
 
 	public void ajouterJoueur(String e) throws java.rmi.RemoteException;
 	

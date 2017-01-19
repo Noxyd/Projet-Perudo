@@ -12,25 +12,25 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			//attributs
 			//@SuppressWarnings("unused")
 			//private int id_partie;
-			private int joueurcourant;
+			private Joueur joueurcourant;
 			private ArrayList<Joueur> joueurs;
 			private boolean state; //indique l'Ètat de la partie - en cours (true) ou salle d'attente (false)
-			
+			private int nbMise = 0, valMise = 0;
 			//constructeur
 			public Partie() throws java.rmi.RemoteException{
 				//this.id_partie = id;
-				this.joueurcourant = 0; //on met un joueur qui est creer plus haut 
+				this.joueurcourant = null; //on met un joueur qui est creer plus haut 
 										//car au d√©bbut on a pas vraiment de joueur avant tirage au sort.
 				this.joueurs = new ArrayList<Joueur>();
 				//this.joueurs = map; //se remplie lors de l'arriv√© des joueurs donc ici vide.
 			}	
 			
 			//methodes
-			public int getJoueurcourant() throws java.rmi.RemoteException{
+			public Joueur getJoueurcourant() {
 				return joueurcourant;
 			}
 
-			public void setJoueurcourant(int joueurcourant) throws java.rmi.RemoteException{
+			public void setJoueurcourant(Joueur joueurcourant) {
 				this.joueurcourant = joueurcourant;
 			}
 
@@ -79,7 +79,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			}
 			
 
-			public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
+public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 				
 				int nbDeVal = nombreDePerudo(val);
 				
@@ -112,12 +112,18 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 					  */
 				    break;
 				  case 3:		//il annonce mise
-					  	j1.mise(nb, val);	  	
+					  	j1.mise(nb, val);	//un joueur a donc Áa derniere mise enregistree
+					  	this.nbMise = nb; 	//et une partie a la derniere mise enregistree par un joueur
+					  	this.valMise = val;
 					break;
 				}
 				
 				
 			}
+			
+		public void passerTour(Joueur j){
+			this.joueurcourant=j;
+		}
 			
 
 }
