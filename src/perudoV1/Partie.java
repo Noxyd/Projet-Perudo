@@ -14,8 +14,9 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			//private int id_partie;
 			private Joueur joueurcourant;
 			private ArrayList<Joueur> joueurs;
-			private boolean state; //indique l'état de la partie - en cours (true) ou salle d'attente (false)
-			private int nbMise = 0, valMise = 0;
+			private boolean state; //indique l'ï¿½tat de la partie - en cours (true) ou salle d'attente (false)
+			private int nbMise = 0, valMise = 0, nbManche = 1;
+			
 			//constructeur
 			public Partie() throws java.rmi.RemoteException{
 				//this.id_partie = id;
@@ -35,7 +36,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			}
 
 			public void ajouterJoueur(String e)throws java.rmi.RemoteException{
-				joueurs.add(new Joueur(e));				
+				joueurs.add(new Joueur());				
 			}
 			
 			public boolean getState() throws java.rmi.RemoteException{
@@ -79,13 +80,13 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			}
 			
 
-public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
-				
-				int nbDeVal = nombreDePerudo(val);
+public void traiteAnnonce(int choixAnnoce, Joueur j1, Joueur j2){
+				//ajouter le a pour la boucle manche
+				int nbDeVal = nombreDePerudo(valMise);
 				
 				switch (choixAnnoce) {
 				  case 1:		//il annonce menteur
-					  if(nbDeVal >= nb){
+					  if(nbDeVal >= nbMise){
 						  j1.suppDe(1);
 					  }
 					  
@@ -98,7 +99,7 @@ public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 					  */
 				    break;
 				  case 2:		//il annnonce tout pile
-					  if(nbDeVal != nb){
+					  if(nbDeVal != nbMise){
 						  //System.out.println("perdu"); //pour tester
 						  j1.suppDe(1);
 					  }
@@ -112,9 +113,10 @@ public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 					  */
 				    break;
 				  case 3:		//il annonce mise
-					  	j1.mise(nb, val);	//un joueur a donc ça derniere mise enregistree
-					  	this.nbMise = nb; 	//et une partie a la derniere mise enregistree par un joueur
-					  	this.valMise = val;
+					  	int nb=0, val=0;	
+					  	j1.mise(nb, val);	//un joueur a donc ï¿½a derniere mise enregistree
+					  	this.nbMise = j1.getNbMise(); 	//et une partie a la derniere mise enregistree par un joueur
+					  	this.valMise = j1.getValMise();
 					break;
 				}
 				
@@ -124,6 +126,19 @@ public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 		public void passerTour(Joueur j){
 			this.joueurcourant=j;
 		}
+		
+		public void passerManche(){ // liÃ© Ã  annoncer
+			this.nbManche =+ 1 ;
+		}
 			
+		public void creerJ(){
+			try {
+				Joueur j = new Joueur();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 
 }
