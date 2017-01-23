@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,6 +79,59 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 				
 		return url;
 	}
+	public ArrayList recherche_partie_list() throws RemoteException {
+		 ArrayList list_part = new ArrayList();
+		 String url = "none";
+			//test permet de vérifier qu'une partie a été trouvé dans la Hashmap.
+			boolean test = false;
+			
+			for(String key : liste_parties.keySet()){
+				//parties.get(key) retourne la valeur de la clé associé.
+				//true : la partie est en en cours || false : la salle d'attente est ouverte.
+				Partie current = liste_parties.get(key);
+				
+				if(current.getState() == false && test == false){
+					if(current.getNombreJoueurs() <= NBMAX_JOUEURS){
+						url = BASE_URL+key;
+						try {
+							Naming.rebind(url, current);
+						} catch (MalformedURLException e) {
+							e.printStackTrace();
+						}
+						list_part.add(url);
+		}
+				}
+			}
+			return list_part;
+	}
+//public String recherche_partie_list() throws RemoteException{
+//		
+//		String url = "none";
+//		//test permet de vérifier qu'une partie a été trouvé dans la Hashmap.
+//		boolean test = false;
+//		
+//		for(String key : liste_parties.keySet()){
+//			//parties.get(key) retourne la valeur de la clé associé.
+//			//true : la partie est en en cours || false : la salle d'attente est ouverte.
+//			Partie current = liste_parties.get(key);
+//			
+//			if(current.getState() == false && test == false){
+//				if(current.getNombreJoueurs() <= NBMAX_JOUEURS){
+//					url = BASE_URL+key;
+//					try {
+//						Naming.rebind(url, current);
+//					} catch (MalformedURLException e) {
+//						e.printStackTrace();
+//					}
+//					return url;
+//				
+//				}
+//			}
+//		}
+//				
+//		return url;
+//	}
+//	
 	
 	/**
 	 * Cette méthode permet de créer un nouvel objet de type Partie à l'intérieur de la hashmap.
