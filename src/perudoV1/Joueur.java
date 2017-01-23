@@ -18,11 +18,11 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	private int nbMise = 0, valMise = 0;
 		
 	//constructeur
-	public Joueur(String pseudo) throws RemoteException {
+	public Joueur() throws RemoteException {
 		super();
 		this.index = 0;
 		id_joueur = genererID();
-		this.pseudo = pseudo;
+		this.pseudo = null;
 		this.de_joueur = null;
 	}
 
@@ -113,7 +113,7 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	}
 	
 	//faire une boucle tant que sur le 100 pour assurer la victoire ;)
-	//faire un choix en chiffre, ex: 1 ou 2 ou 3 (ici on adapte à l'aide de l'entier i)
+	//faire un choix en chiffre, ex: 1 ou 2 ou 3 (ici on adapte ï¿½ l'aide de l'entier i)
 	public int saisir_valeur(int i){
 		//i nous permet de connaitre le nombre de choix, 
 		//si i a la valeur 3 alors le joueur ne peux entrer que 1 ou 2 ou 3.
@@ -137,6 +137,26 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		
 		return 100; //retourn 100 si erreur
 		
+	}
+
+
+	public int getNbMise() {
+		return nbMise;
+	}
+
+
+	public void setNbMise(int nbMise) {
+		this.nbMise = nbMise;
+	}
+
+
+	public int getValMise() {
+		return valMise;
+	}
+
+
+	public void setValMise(int valMise) {
+		this.valMise = valMise;
 	}
 
 }
