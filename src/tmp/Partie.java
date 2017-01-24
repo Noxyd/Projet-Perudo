@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 
 
@@ -15,8 +16,12 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			//private int id_partie;
 			private Joueur joueurcourant;
 			private ArrayList<Joueur> joueurs;
-			private boolean state; //indique l'état de la partie - en cours (true) ou salle d'attente (false)
+			private boolean state; //indique l'ï¿½tat de la partie - en cours (true) ou salle d'attente (false)
 			private int nbMise = 0, valMise = 0;
+			//lorsqu'on l'instancie, on prend les objets Joueur de l'arraylist joueurs et
+            //on met les boolean Ã  0 car les joueurs ne seront pas pret de base
+            private HashMap<Joueur,Boolean> joueurPret;
+
 			//constructeur
 			public Partie() throws java.rmi.RemoteException{
 				//this.id_partie = id;
@@ -24,6 +29,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 										//car au dÃ©bbut on a pas vraiment de joueur avant tirage au sort.
 				this.joueurs = new ArrayList<Joueur>();
 				//this.joueurs = map; //se remplie lors de l'arrivÃ© des joueurs donc ici vide.
+				 this.joueurPret = new HashMap<Joueur,Boolean>();
 			}	
 			
 			//methodes
@@ -80,7 +86,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			}
 			
 
-public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
+			public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 				
 				int nbDeVal = nombreDePerudo(val);
 				
@@ -113,7 +119,7 @@ public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 					  */
 				    break;
 				  case 3:		//il annonce mise
-					  	j1.mise(nb, val);	//un joueur a donc ça derniere mise enregistree
+					  	j1.mise(nb, val);	//un joueur a donc ï¿½a derniere mise enregistree
 					  	this.nbMise = nb; 	//et une partie a la derniere mise enregistree par un joueur
 					  	this.valMise = val;
 					break;
@@ -135,5 +141,25 @@ public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 		}
 		
 		
+		//retourne true si tous les joueurs sont ok
+        public Boolean waitingFoClient(){
+            Boolean res = false;
+            int i=0;
+            for(Joueur key : joueurPret.keySet()){
+                Boolean val = joueurPret.get(key);
+                System.out.println(val);
+                if(val==true){i = i+1;}
+            }
+            
+            if(i==6){res = true;}
+            
+            return res;
+        }  
+        
+        public void setJoueurPret(HashMap<Joueur, Boolean> joueurPret) {
+            this.joueurPret = joueurPret;
+        }
 
+
+		
 }
