@@ -3,6 +3,7 @@ package tmp;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 
@@ -125,5 +126,14 @@ public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 			this.joueurcourant=j;
 		}
 			
+		public ArrayList gameOrder(){
+			
+			ArrayList ordreJ = new ArrayList<Joueur>();
+			ordreJ = this.joueurs;
+			Collections.shuffle(ordreJ);
+			return ordreJ;
+		}
+		
+		
 
 }
