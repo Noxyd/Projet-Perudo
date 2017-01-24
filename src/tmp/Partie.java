@@ -132,12 +132,10 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			this.joueurcourant=j;
 		}
 			
-		public ArrayList gameOrder(){
+		public void gameOrder(){
 			
-			ArrayList ordreJ = new ArrayList<Joueur>();
-			ordreJ = this.joueurs;
-			Collections.shuffle(ordreJ);
-			return ordreJ;
+			Collections.shuffle(this.joueurs);
+			
 		}
 		
 		
