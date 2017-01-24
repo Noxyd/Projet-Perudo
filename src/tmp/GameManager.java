@@ -9,4 +9,5 @@ public interface GameManager extends Remote{
 	public String recherche_partie() throws RemoteException;
 	public ArrayList recherche_partie_list() throws RemoteException;
 	
+	
 }

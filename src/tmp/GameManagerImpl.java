@@ -102,6 +102,7 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 		}
 				}
 			}
+			
 			return list_part;
 	}
 //public String recherche_partie_list() throws RemoteException{
