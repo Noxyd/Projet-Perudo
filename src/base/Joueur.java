@@ -3,6 +3,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Scanner;
 
 @SuppressWarnings("serial")
@@ -12,14 +13,14 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	
 	//attributs
 	private String pseudo;
-	//private ArrayList<De> de_joueur;
+	private ArrayList<Integer> de_joueur;
 	private int nbMise = 0, valMise = 0;
 		
 	//constructeur
 	public Joueur() throws RemoteException {
 		super();
 		this.pseudo = null;
-		//this.de_joueur = null;
+		this.de_joueur = null;
 	}
 
 
@@ -33,23 +34,22 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		this.pseudo = pseudo;
 	}
 
-
-	/*public ArrayList<De> getDe_joueur() throws RemoteException{
-		return de_joueur;
+	public void mise(int nb, int val){
+		this.nbMise = nb;
+		this.valMise = val;
+		
 	}
-	*/
-/*	
+	
+	
+	//methodes sur les DES
+	
 	public void ajoutDe1(){
-		De de = new De();
+		int de = 0;
 		de_joueur.add(de);
 	}
 	
 	public void ajoutDe5(){
-		De de1 = new De();
-		De de2 = new De();
-		De de3 = new De();
-		De de4 = new De();
-		De de5 = new De();
+		int de1 = 0, de2 = 0, de3 = 0, de4 = 0, de5 = 0;
 		de_joueur.add(de1);
 		de_joueur.add(de2);
 		de_joueur.add(de3);
@@ -76,10 +76,10 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	//connaitre le nombre de De qui ont la valeur rentree.
 	public int getDeVal(int val){
 		int nbde = 0;
-		Iterator<De> it = de_joueur.iterator();
+		Iterator<Integer> it = de_joueur.iterator();
 			while (it.hasNext()) {
-				De d = it.next();
-				if (d.getValeurDe() == val){
+				int d = it.next();
+				if (d == val){
 					nbde =+ 1;   	       
 				}
 			}
@@ -88,19 +88,19 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	
 	
 	public void lancerDe(){
-	Iterator<De> it = de_joueur.iterator();
+	Iterator<Integer> it = de_joueur.iterator();
+	int d;	
 		while (it.hasNext()) {
-			De d = it.next();
-			d.changeValeur();
-		}
+				d = it.next();
+				Random rand = new Random();
+		        int nombreAleatoire = rand.nextInt(7 - 1) + 1;  //attention: le 7 est exclu et le 1 inclu
+		        d = nombreAleatoire;
+			}
 		
 	}
 	
-	public void mise(int nb, int val){
-		this.nbMise = nb;
-		this.valMise = val;
-		
-	}
+	
+	//Methode pour saisir une valeur
 	
 	//faire une boucle tant que sur le 100 pour assurer la victoire ;)
 	//faire un choix en chiffre, ex: 1 ou 2 ou 3 (ici on adapte � l'aide de l'entier i)
@@ -121,13 +121,14 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 				j++;
 			}
 			if(str == tabEntier[j]){
+				sc.close();
 				return tabEntier[j]; //retourn la valeur selectionnee par l'user
 			}
 		}
-		
+		sc.close();
 		return 100; //retourn 100 si erreur
 		
 	}
-	*/
+	
 
 }
