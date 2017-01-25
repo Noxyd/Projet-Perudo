@@ -17,15 +17,8 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	private ArrayList<Integer> de_joueur;
 	private int nbMise = 0, valMise = 0;
 		
-<<<<<<< HEAD
 	//constructeur
 	public Joueur(String pseudo) throws RemoteException {
-=======
-	//constructeur:
-	
-	public Joueur() throws RemoteException {
->>>>>>> origin/master
-		super();
 		this.pseudo = null;
 		this.de_joueur = null;
 	}
