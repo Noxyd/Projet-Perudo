@@ -11,20 +11,27 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	
 
 	
-	//attributs
+	//attributs:
+	
 	private String pseudo;
 	private ArrayList<Integer> de_joueur;
 	private int nbMise = 0, valMise = 0;
 		
+<<<<<<< HEAD
 	//constructeur
 	public Joueur(String pseudo) throws RemoteException {
+=======
+	//constructeur:
+	
+	public Joueur() throws RemoteException {
+>>>>>>> origin/master
 		super();
 		this.pseudo = null;
 		this.de_joueur = null;
 	}
 
 
-	//methodes	
+	//methodes:	
 
 	public String getPseudo() throws RemoteException{
 		return pseudo;
@@ -43,11 +50,14 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	
 	//methodes sur les DES
 	
+	
+	//ajout d'1 seul De
 	public void ajoutDe1(){
 		int de = 0;
 		de_joueur.add(de);
 	}
 	
+	//ajout de 5 Des
 	public void ajoutDe5(){
 		int de1 = 0, de2 = 0, de3 = 0, de4 = 0, de5 = 0;
 		de_joueur.add(de1);
@@ -57,7 +67,7 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		de_joueur.add(de5);
 	}
 	
-	
+	//sup un nobre nbe de De
 	public void suppDe(int nbe){
 		int nbede = de_joueur.size();
 		int endsize = nbede - nbe;
@@ -67,13 +77,13 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 			}
 	}
 	
-	//connaitre le nombre de De total
+	//connaitre le nombre de De total du joueur
 	public int getDeTotal(){
 		int nbde = de_joueur.size();
 		return nbde;
 	}
 	
-	//connaitre le nombre de De qui ont la valeur rentree.
+	//connaitre le nombre de De qui ont la valeur val du joueur
 	public int getDeVal(int val){
 		int nbde = 0;
 		Iterator<Integer> it = de_joueur.iterator();
@@ -86,7 +96,7 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		return nbde;
 	}
 	
-	
+	//lancer les De du joueur
 	public void lancerDe(){
 	Iterator<Integer> it = de_joueur.iterator();
 	int d;	
