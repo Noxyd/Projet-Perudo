@@ -11,17 +11,13 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 
 	
 	//attributs
-	private int id_joueur;
 	private String pseudo;
 	private ArrayList<De> de_joueur;
-	private int index;
 	private int nbMise = 0, valMise = 0;
 		
 	//constructeur
 	public Joueur() throws RemoteException {
 		super();
-		this.index = 0;
-		id_joueur = genererID();
 		this.pseudo = null;
 		this.de_joueur = null;
 	}
@@ -42,12 +38,6 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		return de_joueur;
 	}
 	*/
-	public int genererID() throws RemoteException{
-		
-		this.index += 1;
-		
-		return index;
-	}
 	
 	public void ajoutDe1(){
 		De de = new De();
