@@ -44,6 +44,33 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			this.joueurcourant = joueurcourant;
 		}
 		
+		@Override
+		public int getNombreJoueurs() throws RemoteException {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public boolean getState() throws RemoteException {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public void setState(boolean value) throws RemoteException {
+			// TODO Auto-generated method stub
+			
+		}
+		
+        public void setJoueurPret(HashMap<Joueur, Boolean> joueurPret) {
+            this.joueurPret = joueurPret;
+        }
+
+		@Override
+		public void listerJoueurs() throws RemoteException {
+			// TODO Auto-generated method stub
+			
+		}
 		
 		public void rejoindre(String url, String pseudo)throws java.rmi.RemoteException{
 			joueurs.put(url,new Joueur(pseudo));
@@ -75,13 +102,9 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
             
             return res;
         }  
-        
-        public void setJoueurPret(HashMap<Joueur, Boolean> joueurPret) {
-            this.joueurPret = joueurPret;
-        }
 
         
-       /*public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
+       public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 			
 			int nbDeVal = nombreDePerudo(val);
 			
@@ -93,11 +116,12 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				  
 				  j2.suppDe(1);
 				  
+				  /*
 				  gerer le end game ou nouvelle manche
 				  .
 				  .
 				  .
-				  
+				  */
 		
 			    break;
 			  case 2:		//il annnonce tout pile
@@ -107,11 +131,12 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				  }
 					
 				  j1.ajoutDe1();
-					  
+				  /*
 				  gerer le end game ou nouvelle manche
 				  .
 				  .
 				  .
+				   */
 				   
 			    break;
 			  case 3:		//il annonce mise
@@ -122,56 +147,36 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			}
 			
 			
-		}*/
+		}
 
-	@Override
-	public int getNombreJoueurs() throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public boolean getState() throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setState(boolean value) throws RemoteException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void listerJoueurs() throws RemoteException {
-		// TODO Auto-generated method stub
-		
-	}
         
         //methodes sur les Des:
-        
+            
        //connaitre le nombre total de De en jeu dans la partie
-		/*public int getNombreDeTotal(){
-			int nbde = 0;				
-			Iterator<Joueur> it = joueurs.iterator();
-				while (it.hasNext()) {
-				       Joueur j = it.next();
-				       nbde =+ j.getDeTotal();
+		public int getNombreDeTotal(){
+
+				int nbde = 0;
+	            for(String key : joueurs.keySet()){
+	            	Joueur j = joueurs.get(key);
+				    nbde =+ j.getDeTotal();
 				}
+				
 			return nbde;
-		}*/
+		}
 		
 		
 		//ici connaitre le nombre de De total dans la valeur est val, on prend en compte les perudo
-		/*public int nombreDePerudo(int val){
+		public int nombreDePerudo(int val){
+			
 			int res = 0;
-			Iterator<Joueur> it = joueurs.iterator();
-				while (it.hasNext()) {
-				       Joueur j = it.next();
-				       res =+ j.getDeVal(val) + j.getDeVal(1);
-				}
+            for(String key : joueurs.keySet()){
+            	Joueur j = joueurs.get(key);
+			    res =+ j.getDeVal(val) + j.getDeVal(1);
+			}
+	            
 			return res;
-		}*/
+		}
 		
 		
 		
