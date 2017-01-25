@@ -42,7 +42,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			}
 
 			public void ajouterJoueur(String e)throws java.rmi.RemoteException{
-				joueurs.add(new Joueur(e));				
+				joueurs.add(new Joueur());				
 			}
 			
 			public boolean getState() throws java.rmi.RemoteException{

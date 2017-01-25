@@ -11,7 +11,7 @@ public class Run {
 		
 		rmi_init(gm);
 		
-		//Création de 3 parties
+		//Crï¿½ation de 3 parties
 		gm.creer_partie();
 		gm.creer_partie();
 		gm.creer_partie();
@@ -24,7 +24,7 @@ public class Run {
 	/* initialisation du RMI */
 	public static void rmi_init(GameManager obj){
 		try {
-			System.out.println("Démarrage du registre\n");
+			System.out.println("Dï¿½marrage du registre\n");
 			LocateRegistry.createRegistry(1099);
 			String url = "rmi://localhost:1099/gm";
 			Naming.rebind(url, obj);
