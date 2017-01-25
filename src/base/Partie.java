@@ -6,30 +6,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 
 @SuppressWarnings("serial")
 public class Partie extends UnicastRemoteObject implements PartieInt {
 	
 			//attributs
-			//@SuppressWarnings("unused")
-			//private int id_partie;
 			private Joueur joueurcourant;
-			private ArrayList<Joueur> joueurs;
+			
+			private HashMap<String, Joueur> joueurs;
+			private HashMap<Joueur,Boolean> joueurPret;
+			private ArrayList<String> ordreTour;
+			
 			private boolean state; //indique l'�tat de la partie - en cours (true) ou salle d'attente (false)
 			private int nbMise = 0, valMise = 0;
 			//lorsqu'on l'instancie, on prend les objets Joueur de l'arraylist joueurs et
             //on met les boolean à 0 car les joueurs ne seront pas pret de base
-            private HashMap<Joueur,Boolean> joueurPret;
+            
 
 			//constructeur
 			public Partie() throws java.rmi.RemoteException{
-				//this.id_partie = id;
-				this.joueurcourant = null; //on met un joueur qui est creer plus haut 
-										//car au débbut on a pas vraiment de joueur avant tirage au sort.
-				this.joueurs = new ArrayList<Joueur>();
-				//this.joueurs = map; //se remplie lors de l'arrivé des joueurs donc ici vide.
-				 this.joueurPret = new HashMap<Joueur,Boolean>();
+				this.joueurcourant = null; //on met un joueur qui est creer plus haut car au debut on a pas vraiment de joueur avant tirage au sort.
+				this.joueurs = new HashMap<String, Joueur>();
+				this.joueurPret = new HashMap<Joueur,Boolean>();
+				this.ordreTour = new ArrayList<String>();
 			}	
 			
 			//methodes
@@ -41,8 +42,10 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				this.joueurcourant = joueurcourant;
 			}
 
-			public void ajouterJoueur(String e)throws java.rmi.RemoteException{
-				joueurs.add(new Joueur());				
+			public void Rejoindre(String url, String pseudo)throws java.rmi.RemoteException{
+				joueurs.put(url,new Joueur(pseudo));
+				ordreTour.add(url);
+				System.out.println(pseudo+" a rejoins la partie avec l'url : "+url);
 			}
 			
 			public boolean getState() throws java.rmi.RemoteException{
@@ -137,7 +140,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			
 		public void gameOrder(){
 			
-			Collections.shuffle(this.joueurs);
+			Collections.shuffle(this.ordreTour);
 			
 		}
 		

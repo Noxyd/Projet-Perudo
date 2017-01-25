@@ -17,7 +17,7 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	private int nbMise = 0, valMise = 0;
 		
 	//constructeur
-	public Joueur() throws RemoteException {
+	public Joueur(String pseudo) throws RemoteException {
 		super();
 		this.pseudo = null;
 		this.de_joueur = null;

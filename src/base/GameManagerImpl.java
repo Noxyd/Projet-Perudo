@@ -5,13 +5,14 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import tmp.Partie;
+
 /**
  * Classe GameManager.
- * Permet de gï¿½rer des parties : crï¿½er, supprimer, naviguer dans la liste des parties.
+ * Permet de gérer des parties : créer, supprimer, naviguer dans la liste des parties.
  * 
  * @author Groupe Garcia, Lesaichot, Tavera - STRI
  * 
@@ -44,7 +45,7 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 	
 	
 	
-	/* Mï¿½thodes */
+	/* Méthodes */
 	
 	/**
 	 * Permet d'effectuer la recherche et l'attribution d'une partie.
@@ -56,11 +57,11 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 	public String recherche_partie() throws RemoteException{
 		
 		String url = "none";
-		//test permet de vï¿½rifier qu'une partie a ï¿½tï¿½ trouvï¿½ dans la Hashmap.
+		//test permet de vérifier qu'une partie a été trouvé dans la Hashmap.
 		boolean test = false;
 		
 		for(String key : liste_parties.keySet()){
-			//parties.get(key) retourne la valeur de la clï¿½ associï¿½.
+			//parties.get(key) retourne la valeur de la clé associé.
 			//true : la partie est en en cours || false : la salle d'attente est ouverte.
 			Partie current = liste_parties.get(key);
 			
@@ -79,14 +80,14 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 				
 		return url;
 	}
-	public ArrayList recherche_partie_list() throws RemoteException {
-		 ArrayList list_part = new ArrayList();
+	public ArrayList<String> recherche_partie_list() throws RemoteException {
+		 ArrayList<String> list_part = new ArrayList<String>();
 		 String url = "none";
-			//test permet de vï¿½rifier qu'une partie a ï¿½tï¿½ trouvï¿½ dans la Hashmap.
+			//test permet de vérifier qu'une partie a été trouvé dans la Hashmap.
 			boolean test = false;
 			
 			for(String key : liste_parties.keySet()){
-				//parties.get(key) retourne la valeur de la clï¿½ associï¿½.
+				//parties.get(key) retourne la valeur de la clé associé.
 				//true : la partie est en en cours || false : la salle d'attente est ouverte.
 				Partie current = liste_parties.get(key);
 				
@@ -99,7 +100,7 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 							e.printStackTrace();
 						}
 						list_part.add(url);
-		}
+					}
 				}
 			}
 			
@@ -108,8 +109,8 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 
 	
 	/**
-	 * Cette mï¿½thode permet de crï¿½er un nouvel objet de type Partie ï¿½ l'intï¿½rieur de la hashmap.
-	 * On gï¿½nere un id ï¿½ cette partie ("perudo-" suivie de 5 caractï¿½res alpha-numï¿½riques). 
+	 * Cette méthode permet de créer un nouvel objet de type Partie à l'intérieur de la hashmap.
+	 * On génere un id à cette partie ("perudo-" suivie de 5 caractères alpha-numériques). 
 	 * Cet id devient la key de l'objet.
 	 * 
 	 */
@@ -119,15 +120,15 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 		
 		id += generer_chaine();
 		
-		//TODO Penser ï¿½ vï¿½rifier que la chaine n'existe pas deja
+		//TODO Penser à vérifier que la chaine n'existe pas deja
 		
 		liste_parties.put(id, new Partie());
 		
-		System.out.println("Partie "+id+" crï¿½e.");
+		System.out.println("Partie "+id+" crée.");
 	}
 	
 	/**
-	 * Gï¿½nï¿½re une chaine composï¿½e de 5 caratï¿½res alpha-numï¿½riques.
+	 * Génère une chaine composée de 5 caratères alpha-numériques.
 	 * 
 	 * @return chaine
 	 */

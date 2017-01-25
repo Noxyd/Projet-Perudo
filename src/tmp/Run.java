@@ -4,6 +4,9 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
+import base.GameManager;
+import base.GameManagerImpl;
+
 public class Run {
 	public static void main(String[] args) throws RemoteException{
 		

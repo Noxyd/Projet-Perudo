@@ -4,8 +4,7 @@ import java.rmi.RemoteException;
 
 public interface PartieInt extends java.rmi.Remote{
 	
-
-	public void ajouterJoueur(String e) throws java.rmi.RemoteException;
+	public int getNombreJoueurs() throws java.rmi.RemoteException;
 	
 	public int getNombreJoueurs() throws java.rmi.RemoteException;
 	
