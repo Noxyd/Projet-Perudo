@@ -22,7 +22,6 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			
 			private boolean state; //indique l'etat de la partie - en cours (true) ou salle d'attente (false)
 			private int nbMise = 0, valMise = 0;
-            private HashMap<Joueur,Boolean> joueurPret; //lorsqu'on l'instancie, on prend les objets Joueur de l'arraylist joueurs et
             //on met les boolean à 0 car les joueurs ne seront pas pret de base
             
 
@@ -82,7 +81,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
         }
 
         
-       public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
+       /*public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 			
 			int nbDeVal = nombreDePerudo(val);
 			
@@ -94,11 +93,11 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				  
 				  j2.suppDe(1);
 				  
-				  /*gerer le end game ou nouvelle manche
+				  gerer le end game ou nouvelle manche
 				  .
 				  .
 				  .
-				  */
+				  
 		
 			    break;
 			  case 2:		//il annnonce tout pile
@@ -109,11 +108,11 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 					
 				  j1.ajoutDe1();
 					  
-				  /*gerer le end game ou nouvelle manche
+				  gerer le end game ou nouvelle manche
 				  .
 				  .
 				  .
-				  */ 
+				   
 			    break;
 			  case 3:		//il annonce mise
 				  	j1.mise(nb, val);	//un joueur a donc sa derniere mise enregistree
@@ -123,12 +122,36 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			}
 			
 			
-		}
+		}*/
+
+	@Override
+	public int getNombreJoueurs() throws RemoteException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean getState() throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setState(boolean value) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void listerJoueurs() throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
         
         //methodes sur les Des:
         
        //connaitre le nombre total de De en jeu dans la partie
-		public int getNombreDeTotal(){
+		/*public int getNombreDeTotal(){
 			int nbde = 0;				
 			Iterator<Joueur> it = joueurs.iterator();
 				while (it.hasNext()) {
@@ -136,11 +159,11 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				       nbde =+ j.getDeTotal();
 				}
 			return nbde;
-		}
+		}*/
 		
 		
 		//ici connaitre le nombre de De total dans la valeur est val, on prend en compte les perudo
-		public int nombreDePerudo(int val){
+		/*public int nombreDePerudo(int val){
 			int res = 0;
 			Iterator<Joueur> it = joueurs.iterator();
 				while (it.hasNext()) {
@@ -148,7 +171,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				       res =+ j.getDeVal(val) + j.getDeVal(1);
 				}
 			return res;
-		}
+		}*/
 		
 		
 		
