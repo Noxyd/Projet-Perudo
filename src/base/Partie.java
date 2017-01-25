@@ -42,7 +42,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				this.joueurcourant = joueurcourant;
 			}
 
-			public void Rejoindre(String url, String pseudo)throws java.rmi.RemoteException{
+			public void rejoindre(String url, String pseudo)throws java.rmi.RemoteException{
 				joueurs.put(url,new Joueur(pseudo));
 				ordreTour.add(url);
 				System.out.println(pseudo+" a rejoins la partie avec l'url : "+url);

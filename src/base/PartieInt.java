@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 
 public interface PartieInt extends java.rmi.Remote{
 	
-	public int getNombreJoueurs() throws java.rmi.RemoteException;
+	public void rejoindre(String url, String pseudo) throws java.rmi.RemoteException;
 	
 	public int getNombreJoueurs() throws java.rmi.RemoteException;
 	
