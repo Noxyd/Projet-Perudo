@@ -116,7 +116,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			
 			switch (choixAnnoce) {
 			  case 1:		//il annonce menteur
-				  if(nbDeVal >= nb){
+				  if(valMise >= nbMise){
 					  j1.suppDe(1);
 				  }
 				  
@@ -131,7 +131,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 		
 			    break;
 			  case 2:		//il annnonce tout pile
-				  if(nbDeVal != nb){
+				  if(nbDeVal != nbMise){
 					  //System.out.println("perdu"); //pour tester
 					  j1.suppDe(1);
 				  }
@@ -179,7 +179,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				int nbde = 0;
 	            for(String key : joueurs.keySet()){
 	            	Joueur j = joueurs.get(key);
-				    nbde =+ j.getDeTotal();
+				    nbde = nbde + j.getDeTotal();
 				}
 				
 			return nbde;
@@ -192,7 +192,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			int res = 0;
             for(String key : joueurs.keySet()){
             	Joueur j = joueurs.get(key);
-			    res =+ j.getDeVal(val) + j.getDeVal(1);
+			    res = res + j.getDeVal(val) + j.getDeVal(1);
 			}
 	            
 			return res;

@@ -81,15 +81,16 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	}
 	
 	//connaitre le nombre de De qui ont la valeur val du joueur
+	//sans le nombre de perudo car géré dans partie.
 	public int getDeVal(int val){
-		int nbde = 0;
-		Iterator<Integer> it = de_joueur.iterator();
-			while (it.hasNext()) {
-				int d = it.next();
-				if (d == val){
-					nbde =+ 1;   	       
-				}
-			}
+			 int nbde = 0;
+			 int i = 0;
+
+			   for (i=0;i<de_joueur.size();i++) {
+				   if(val == de_joueur.get(i)){
+					   nbde = nbde + 1; 
+				   }
+			   } 
 		return nbde;
 	}
 	
