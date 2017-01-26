@@ -19,8 +19,8 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		
 	//constructeur
 	public Joueur(String pseudo) throws RemoteException {
-		this.pseudo = null;
-		this.de_joueur = null;
+		this.pseudo = pseudo;
+		this.de_joueur = new ArrayList<Integer>();;
 	}
 
 
@@ -42,14 +42,18 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	
 	
 	//methodes sur les DES
-	
+
+	//get de l'arraylist de Des
+	public ArrayList<Integer> getDe_joueur() {
+		return de_joueur;
+	}
 	
 	//ajout d'1 seul De
 	public void ajoutDe1(){
 		int de = 0;
 		de_joueur.add(de);
 	}
-	
+
 	//ajout de 5 Des
 	public void ajoutDe5(){
 		int de1 = 0, de2 = 0, de3 = 0, de4 = 0, de5 = 0;
@@ -92,12 +96,15 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	//lancer les De du joueur
 	public void lancerDe(){
 	Iterator<Integer> it = de_joueur.iterator();
-	int d;	
+	
+	int i=0;
 		while (it.hasNext()) {
-				d = it.next();
+				i = it.next();
+				System.out.println(i);
 				Random rand = new Random();
 		        int nombreAleatoire = rand.nextInt(7 - 1) + 1;  //attention: le 7 est exclu et le 1 inclu
-		        d = nombreAleatoire;
+		        
+		        this.de_joueur.set(i, nombreAleatoire);
 			}
 		
 	}
