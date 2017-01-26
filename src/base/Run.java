@@ -39,9 +39,13 @@ public class Run {
             	}
 	        }
 	        
+	        
+	        //operation sur Des:
 	        j.lancerDes();
+	        
         	System.out.println("----------------------______________________-------------------");
 
+        	//verrif des Des:
 	        for(String key : j.getJoueurs().keySet()){
             	Joueur jou = j.getJoueurs().get(key);
             	System.out.println(": " + jou.getPseudo());
@@ -56,6 +60,33 @@ public class Run {
             	 System.out.println("De de " + jou.getPseudo() + " val: "+d);
             	 }
 	        }
-	    	
+	       
+	        
+	      //operation sur Des:
+	        Joueur jo = j.getJoueurs().get("much");
+	        jo.suppDe(2);
+	        Joueur ju = j.getJoueurs().get("much1");
+	        ju.suppDe(1);
+	        Joueur je = j.getJoueurs().get("much3");
+	        je.ajoutDe1();
+	        je.ajoutDe1();
+	        Joueur jj = j.getJoueurs().get("much4");
+	        jj.ajoutDe1();
+        	System.out.println("----------------------______________________-------------------");
+
+        	for(String key : j.getJoueurs().keySet()){
+            	Joueur jou = j.getJoueurs().get(key);
+            	System.out.println(": " + jou.getPseudo());
+
+
+            	 ArrayList<Integer> arr = new ArrayList<Integer>();
+            	 arr=jou.getDe_joueur();
+            	
+            	 int i;
+            	 for (i=0;i<arr.size();i++) {
+            	 int d=arr.get(i);
+            	 System.out.println("De de " + jou.getPseudo() + " val: "+d);
+            	 }
+	        }
 	}
 }

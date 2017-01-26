@@ -69,7 +69,7 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		int nbede = de_joueur.size();
 		int endsize = nbede - nbe;
 			while(nbede != endsize){
-			de_joueur.remove(nbede);	
+			de_joueur.remove(nbede-1);	
 			nbede = de_joueur.size();
 			}
 	}
