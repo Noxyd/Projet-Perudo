@@ -44,19 +44,17 @@ public class Run {
 
 	        for(String key : j.getJoueurs().keySet()){
             	Joueur jou = j.getJoueurs().get(key);
-            	
+            	System.out.println(": " + jou.getPseudo());
+
 
             	 ArrayList<Integer> arr = new ArrayList<Integer>();
             	 arr=jou.getDe_joueur();
-
-            	Iterator<Integer> it = arr.iterator();
-            	int i;
-            	int d;
-            	while (it.hasNext()) {
-    				i = it.next();
-    				d=arr.get(i);
-            	System.out.println("De de " + jou.getPseudo() + " val: "+d);
-            	}
+            	
+            	 int i;
+            	 for (i=0;i<arr.size();i++) {
+            	 int d=arr.get(i);
+            	 System.out.println("De de " + jou.getPseudo() + " val: "+d);
+            	 }
 	        }
 	    	
 	}

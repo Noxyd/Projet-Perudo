@@ -95,18 +95,12 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	
 	//lancer les De du joueur
 	public void lancerDe(){
-	Iterator<Integer> it = de_joueur.iterator();
-	
-	int i=0;
-		while (it.hasNext()) {
-				i = it.next();
-				System.out.println(i);
-				Random rand = new Random();
-		        int nombreAleatoire = rand.nextInt(7 - 1) + 1;  //attention: le 7 est exclu et le 1 inclu
-		        
-		        this.de_joueur.set(i, nombreAleatoire);
-			}
-		
+		 int i;
+		   for (i=0;i<de_joueur.size();i++) {
+			   Random rand = new Random();
+		       int nombreAleatoire = rand.nextInt(7 - 1) + 1;  //attention: le 7 est exclu et le 1 inclu
+		       this.de_joueur.set(i, nombreAleatoire);
+		   }		
 	}
 	
 	

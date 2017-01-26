@@ -207,7 +207,6 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 				String urlJ = ordreTourI.next();
 				Joueur j = joueurs.get(urlJ);
 				j.lancerDe();
-				System.out.println(urlJ);
 			}			
 		}
 		
