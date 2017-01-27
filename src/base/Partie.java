@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
 @SuppressWarnings("serial")
 public class Partie extends UnicastRemoteObject implements PartieInt, Runnable {
 	
@@ -42,36 +41,43 @@ public class Partie extends UnicastRemoteObject implements PartieInt, Runnable {
 			return joueurcourant;
 		}
 
+		public HashMap<String, Joueur> getJoueurs() {
+			return joueurs;
+		}
+
+		public void setOrdreTour(Joueur j) {	
+			try {
+				this.ordreTour.add(j.getPseudo());
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		public void setJoueurcourant(Joueur joueurcourant) {
 			this.joueurcourant = joueurcourant;
 		}
 		
-		@Override
-		public int getNombreJoueurs() throws RemoteException {
-			// TODO Auto-generated method stub
-			return 0;
+		public int getNombreJoueurs() throws java.rmi.RemoteException{
+			return joueurs.size();
 		}
 
-		@Override
-		public boolean getState() throws RemoteException {
-			// TODO Auto-generated method stub
-			return false;
+		public boolean getState() throws java.rmi.RemoteException{
+			return state;
 		}
 
-		@Override
-		public void setState(boolean value) throws RemoteException {
-			// TODO Auto-generated method stub
-			
+		public void setState(boolean value) throws java.rmi.RemoteException{
+			state = value;
 		}
 		
         public void setJoueurPret(HashMap<Joueur, Boolean> joueurPret) {
             this.joueurPret = joueurPret;
         }
 
-		@Override
-		public void listerJoueurs() throws RemoteException {
-			// TODO Auto-generated method stub
-			
+		public void listerJoueurs() throws RemoteException{
+			for(int i = 0; i<joueurs.size();i++){
+				System.out.println(joueurs.get(i).getPseudo());
+			}
 		}
 		
 		public void rejoindre(String url, String pseudo)throws java.rmi.RemoteException{
@@ -113,7 +119,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt, Runnable {
 			
 			switch (choixAnnoce) {
 			  case 1:		//il annonce menteur
-				  if(nbDeVal >= nb){
+				  if(valMise >= nbMise){
 					  j1.suppDe(1);
 				  }
 				  
@@ -128,7 +134,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt, Runnable {
 		
 			    break;
 			  case 2:		//il annnonce tout pile
-				  if(nbDeVal != nb){
+				  if(nbDeVal != nbMise){
 					  //System.out.println("perdu"); //pour tester
 					  j1.suppDe(1);
 				  }
@@ -152,7 +158,19 @@ public class Partie extends UnicastRemoteObject implements PartieInt, Runnable {
 			
 		}
 
-
+	//on donne l'url et on retrouve le pseudo
+       public String urlPseudo(String url){
+    	   String str = "";
+    	   
+    	   Joueur j = joueurs.get(url);
+    	   try {
+			str = j.getPseudo();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	   return str;
+       }
 
 	@Override
 	public void run() {
@@ -190,7 +208,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt, Runnable {
 				int nbde = 0;
 	            for(String key : joueurs.keySet()){
 	            	Joueur j = joueurs.get(key);
-				    nbde =+ j.getDeTotal();
+				    nbde = nbde + j.getDeTotal();
 				}
 				
 			return nbde;
@@ -203,13 +221,33 @@ public class Partie extends UnicastRemoteObject implements PartieInt, Runnable {
 			int res = 0;
             for(String key : joueurs.keySet()){
             	Joueur j = joueurs.get(key);
-			    res =+ j.getDeVal(val) + j.getDeVal(1);
+			    res = res + j.getDeVal(val) + j.getDeVal(1);
 			}
 	            
 			return res;
 		}
 		
 		
+		//lancer les Des de tout les joueur en game.
+		public void lancerDes(){			
+			
+			Iterator<String> ordreTourI = ordreTour.iterator();
+			while (ordreTourI.hasNext()) {
+				String urlJ = ordreTourI.next();
+				Joueur j = joueurs.get(urlJ);
+				j.lancerDe();
+			}			
+		}
 		
+		//avec un url donné, on recupere ses Des
+	   public ArrayList<Integer> recupDe(String url){
+		  
+		   ArrayList<Integer> arr = new ArrayList<Integer>();
+		   Joueur j = joueurs.get(url);
+		   arr = j.getDe_joueur();
+
+  	   	return arr;
+	   }
+  	   
 		
 }

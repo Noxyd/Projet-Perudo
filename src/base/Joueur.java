@@ -19,8 +19,8 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		
 	//constructeur
 	public Joueur(String pseudo) throws RemoteException {
-		this.pseudo = null;
-		this.de_joueur = null;
+		this.pseudo = pseudo;
+		this.de_joueur = new ArrayList<Integer>();;
 	}
 
 
@@ -42,14 +42,18 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	
 	
 	//methodes sur les DES
-	
+
+	//get de l'arraylist de Des
+	public ArrayList<Integer> getDe_joueur() {
+		return de_joueur;
+	}
 	
 	//ajout d'1 seul De
 	public void ajoutDe1(){
 		int de = 0;
 		de_joueur.add(de);
 	}
-	
+
 	//ajout de 5 Des
 	public void ajoutDe5(){
 		int de1 = 0, de2 = 0, de3 = 0, de4 = 0, de5 = 0;
@@ -65,7 +69,7 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 		int nbede = de_joueur.size();
 		int endsize = nbede - nbe;
 			while(nbede != endsize){
-			de_joueur.remove(nbede);	
+			de_joueur.remove(nbede-1);	
 			nbede = de_joueur.size();
 			}
 	}
@@ -77,29 +81,27 @@ public class Joueur extends UnicastRemoteObject implements JoueurInt{
 	}
 	
 	//connaitre le nombre de De qui ont la valeur val du joueur
+	//sans le nombre de perudo car géré dans partie.
 	public int getDeVal(int val){
-		int nbde = 0;
-		Iterator<Integer> it = de_joueur.iterator();
-			while (it.hasNext()) {
-				int d = it.next();
-				if (d == val){
-					nbde =+ 1;   	       
-				}
-			}
+			 int nbde = 0;
+			 int i = 0;
+
+			   for (i=0;i<de_joueur.size();i++) {
+				   if(val == de_joueur.get(i)){
+					   nbde = nbde + 1; 
+				   }
+			   } 
 		return nbde;
 	}
 	
 	//lancer les De du joueur
 	public void lancerDe(){
-	Iterator<Integer> it = de_joueur.iterator();
-	int d;	
-		while (it.hasNext()) {
-				d = it.next();
-				Random rand = new Random();
-		        int nombreAleatoire = rand.nextInt(7 - 1) + 1;  //attention: le 7 est exclu et le 1 inclu
-		        d = nombreAleatoire;
-			}
-		
+		 int i;
+		   for (i=0;i<de_joueur.size();i++) {
+			   Random rand = new Random();
+		       int nombreAleatoire = rand.nextInt(7 - 1) + 1;  //attention: le 7 est exclu et le 1 inclu
+		       this.de_joueur.set(i, nombreAleatoire);
+		   }		
 	}
 	
 	
