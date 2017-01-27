@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import tmp.Partie;
 
 /**
  * Classe GameManager.
@@ -125,6 +124,18 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 		liste_parties.put(id, new Partie());
 		
 		System.out.println("Partie "+id+" crée.");
+		
+		Thread thPartie = new Thread(liste_parties.get(id));
+		
+		while(true){
+			thPartie.start();
+			try {
+				thPartie.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

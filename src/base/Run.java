@@ -8,17 +8,17 @@ public class Run {
 	public static void main(String[] args) throws RemoteException{
 		
 		GameManagerImpl gm = new GameManagerImpl();
-		
+		int i;
 		rmi_init(gm);
 		
-		//Crï¿½ation de 3 parties
-		gm.creer_partie();
-		gm.creer_partie();
-		gm.creer_partie();
+		//Creation de 3 parties
+		for(i = 0; i < 3; i++){
+			gm.creer_partie();
+		}
+			
+		System.out.println("Serveur en écoute. "+i+" parties disponibles.");
 		
-		//TEST Recherche d'une partie
-		String url = gm.recherche_partie();
-		System.out.println("\nurl : "+url);
+
 	}
 	
 	/* initialisation du RMI */

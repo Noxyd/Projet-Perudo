@@ -10,19 +10,21 @@ import java.util.Map;
 
 
 @SuppressWarnings("serial")
-public class Partie extends UnicastRemoteObject implements PartieInt {
+public class Partie extends UnicastRemoteObject implements PartieInt, Runnable {
 	
 			//attributs:
 	
 			private Joueur joueurcourant;
 			
 			private HashMap<String, Joueur> joueurs;
-			private HashMap<Joueur,Boolean> joueurPret;
+			private HashMap<String,Boolean> joueurPret;
 			private ArrayList<String> ordreTour;
 			
 			private boolean state; //indique l'etat de la partie - en cours (true) ou salle d'attente (false)
 			private int nbMise = 0, valMise = 0;
             //on met les boolean à 0 car les joueurs ne seront pas pret de base
+			
+			private final int NB_MAX_JOUEURS = 6;
             
 
 			//constructeur:
@@ -30,7 +32,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 			public Partie() throws java.rmi.RemoteException{
 				this.joueurcourant = null; //on met un joueur qui est creer plus haut car au debut on a pas vraiment de joueur avant tirage au sort.
 				this.joueurs = new HashMap<String, Joueur>();
-				this.joueurPret = new HashMap<Joueur,Boolean>();
+				this.joueurPret = new HashMap<String,Boolean>();
 				this.ordreTour = new ArrayList<String>();
 			}	
 			
@@ -48,6 +50,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 		public void rejoindre(String url, String pseudo)throws java.rmi.RemoteException{
 			joueurs.put(url,new Joueur(pseudo));
 			ordreTour.add(url);
+			joueurPret.put(url, false);
 			System.out.println(pseudo+" a rejoins la partie avec l'url : "+url);
 		}
 	
@@ -65,7 +68,7 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
         public Boolean waitingFoClient(){
             Boolean res = false;
             int i=0;
-            for(Joueur key : joueurPret.keySet()){
+            for(String key : joueurPret.keySet()){
                 Boolean val = joueurPret.get(key);
                 System.out.println(val);
                 if(val==true){i = i+1;}
@@ -146,6 +149,34 @@ public class Partie extends UnicastRemoteObject implements PartieInt {
 	public void listerJoueurs() throws RemoteException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void run() {
+		//ATTENTE DES CLIENTS
+		this.attenteClients();
+		//ENTREE DANS LA PARTIE
+		
+	}
+	
+	public void attenteClients(){
+		boolean test = false;
+		int nbJoueurs = 0;
+		int nbTrue = 0;
+		
+		while(test != true){
+			if(nbJoueurs < NB_MAX_JOUEURS){
+				for(String key : joueurPret.keySet()){
+					if(joueurPret.get(key)==true){
+						nbTrue+=1;
+					}
+				}
+				if(nbTrue == 6){
+					test = true;
+				}
+			}
+			
+		}
 	}
         
         //methodes sur les Des:
