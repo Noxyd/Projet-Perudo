@@ -1,5 +1,6 @@
 package base;
 
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -7,6 +8,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import local.Joueur;
+import local.PartieClient;
 
 @SuppressWarnings("serial")
 public class Partie extends UnicastRemoteObject implements PartieInt, Runnable {
@@ -112,6 +116,98 @@ public class Partie extends UnicastRemoteObject implements PartieInt, Runnable {
             return res;
         }  
 
+ public void transmitBet() throws RemoteException{
+        	
+        	ArrayList<Integer> recup = new ArrayList<Integer>();
+        	
+        	this.partie_client = (PartieClient) Naming.lookup("rmi://localhost:1099/");
+        	recup = partie_client.bet(nbMise, valMise); 
+        	
+        	//int nbDeVal = nombreDePerudo(val);
+			
+        	int choixAnnonce = 0;
+			
+        	if(recup.get(1) != null )
+        		{ choixAnnonce = 1; }
+			else if (recup.get(0) == 0)
+				{ choixAnnonce = 2; } //menteur
+			else 
+				{ choixAnnonce = 3; } //toutpile
+        	
+			switch (choixAnnonce) {
+			 case 1:		//il annonce mise
+				//et une partie a la derniere mise enregistree par un joueur
+				 	this.nbMise = recup.get(0); 	
+				  	this.valMise = recup.get(1);
+				break;
+				
+			 case 2:		//il annonce menteur
+				 int toto = nombreDePerudo(this.valMise);
+				  if( this.nbMise >= toto ){
+					  //le joueur qui a dit le menteur gagne
+					  //local
+					  Joueur jp = getJoueurprecedant();
+					  jp.suppDe(1);
+					  
+					  //distant
+					  //le joueur doit être informé
+					  
+				  }
+				  else {
+					  //local
+					  //le joueur qui dit menteur a perdu
+					  Joueur ja = getJoueurcourant();
+					  ja.suppDe(1);
+					  
+					  //distant
+					  //le joueur doit être informé
+
+				  }
+				  
+				  /*
+				  gerer le end game ou nouvelle manche
+				  .
+				  .
+				  .
+				  */
+		
+			    break;
+			  case 3:		//il annnonce tout pile
+				  int tuto = nombreDePerudo(this.valMise);
+				  if( this.nbMise == tuto ){
+					  //local
+					  //le joueur qui dit toutpile gagne
+					  Joueur ja = getJoueurcourant();
+					  ja.ajoutDe1();
+					  
+					  //distant
+					  //tous les joueurs doivent être informé
+					  
+				  }
+				  else{
+					//local
+					  //le joueur qui dit toutpile perd
+					  Joueur ja = getJoueurcourant();
+					  ja.suppDe(1);
+					  
+					  //distant
+					  //tous les joueurs doivent être informé
+					  
+				  }
+				  /*
+				  gerer le end game ou nouvelle manche
+				  .
+				  .
+				  .
+				   */
+				   
+			    break;
+			 
+			}
+			
+			
+		}
+        	
         
        public void annoncer(int choixAnnoce, Joueur j1, Joueur j2, int nb, int val){
 			
