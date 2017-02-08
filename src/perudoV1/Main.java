@@ -5,6 +5,14 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
+
+/* 
+ * TODO ce week-end:
+ * 		- Gestion du premier tour de chaque manche
+ * 		- Modification du thread notify
+ * 		- Gestion du menteur et tout pile
+ */
+
 //Server
 public class Main {
 	public static void main(String[] args){
