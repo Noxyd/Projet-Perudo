@@ -12,8 +12,8 @@ public class Main {
 		try {
 			
 			GameImpl game = new GameImpl();
-			GameControl gc = new GameControl(game, 1);
-			Thread thGC = new Thread(gc);
+			/*GameControl gc = new GameControl(game, 1);
+			Thread thGC = new Thread(gc);*/
 			
 			System.out.println("[SERVER ONLINE]");
 			
@@ -24,7 +24,7 @@ public class Main {
 			Naming.rebind("game-1", game);
 			
 			//This thread check if there is enough clients to begin
-			thGC.start();
+			//thGC.start();
 			
 			//The game wait for the notify of the GC
 			game.round();
