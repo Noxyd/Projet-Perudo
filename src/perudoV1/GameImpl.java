@@ -8,18 +8,18 @@ import java.util.ArrayList;
 public class GameImpl extends UnicastRemoteObject implements Game {
 
 	private ArrayList<Clients> clients_list;
-	private boolean notWait1;
+	private boolean notWait1 = false;;
 
 	public GameImpl() throws RemoteException{
 		super();
 		clients_list = new ArrayList<Clients>();
 	}
 
-	public int getSize(){
+	public synchronized int getSize(){
 		return clients_list.size();
 	}
 
-	public int connexion(Clients cli)throws RemoteException{
+	public synchronized int connexion(Clients cli)throws RemoteException{
 
 		clients_list.add(cli);
 		System.out.println(cli.getName()+" s'est connect�.");
@@ -30,7 +30,6 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 
 	public void ready()throws RemoteException{
 		synchronized(this){
-			notWait1 = false;
 			for(Clients cli : this.clients_list){
 				cli.printString("[INFO] La partie va commencer.");
 			}
@@ -40,6 +39,7 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 				e.printStackTrace();
 			}
 			notify();
+			System.out.println("notify fait");
 			notWait1 = true;
 		}
 	}
@@ -70,6 +70,7 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 			try {
 				//Waiting for clients
 				while(!notWait1){
+					System.out.println("toto");
 					wait();
 				}
 				
