@@ -1,4 +1,4 @@
-package base;
+package perudoV3;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -23,10 +23,10 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 	
 	
 	/* Attributs */
-	private Map<String, Partie> liste_parties;
+	private Map<String, GameImpl> liste_parties;
 	
-	private final int NBMAX_JOUEURS = 6;
-	private final String BASE_URL = "rmi://localhost/";
+	private final int NBMAX_JOUEURS = 2;
+	private final String BASE_URL = "rmi://localhost:1099/";
 	
 	
 	
@@ -39,7 +39,7 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 	 */
 	public GameManagerImpl() throws RemoteException {
 		super();
-		liste_parties = new HashMap<String,Partie>();
+		liste_parties = new HashMap<String,GameImpl>();
 	}
 	
 	
@@ -62,10 +62,10 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 		for(String key : liste_parties.keySet()){
 			//parties.get(key) retourne la valeur de la clé associé.
 			//true : la partie est en en cours || false : la salle d'attente est ouverte.
-			Partie current = liste_parties.get(key);
+			GameImpl current = liste_parties.get(key);
 			
 			if(current.getState() == false && test == false){
-				if(current.getNombreJoueurs() <= NBMAX_JOUEURS){
+				if(current.getSize() <= NBMAX_JOUEURS){
 					url = BASE_URL+key;
 					try {
 						Naming.rebind(url, current);
@@ -88,10 +88,10 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 			for(String key : liste_parties.keySet()){
 				//parties.get(key) retourne la valeur de la clé associé.
 				//true : la partie est en en cours || false : la salle d'attente est ouverte.
-				Partie current = liste_parties.get(key);
+				GameImpl current = liste_parties.get(key);
 				
 				if(current.getState() == false && test == false){
-					if(current.getNombreJoueurs() <= NBMAX_JOUEURS){
+					if(current.getSize() <= NBMAX_JOUEURS){
 						url = BASE_URL+key;
 						try {
 							Naming.rebind(url, current);
@@ -121,21 +121,19 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 		
 		//TODO Penser à vérifier que la chaine n'existe pas deja
 		
-		liste_parties.put(id, new Partie());
+		liste_parties.put(id, new GameImpl());
+		String url = BASE_URL+id;
+		try {
+			Naming.rebind(url, liste_parties.get(id));
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
 		
-		System.out.println("Partie "+id+" crée.");
+		System.out.println("Partie "+url+" crée.");
 		
 		Thread thPartie = new Thread(liste_parties.get(id));
 		
-		while(true){
-			thPartie.start();
-			try {
-				thPartie.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		thPartie.start();
 	}
 	
 	/**
