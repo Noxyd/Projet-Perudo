@@ -8,17 +8,22 @@ import java.util.ArrayList;
 public class GameImpl extends UnicastRemoteObject implements Game {
 
 	private ArrayList<Clients> clients_list;
+<<<<<<< HEAD
 	private final int NB_MAX_CLIENTS = 2;
+=======
+	private boolean notWait1 = false;;
+>>>>>>> master
 
 	public GameImpl() throws RemoteException{
 		super();
 		clients_list = new ArrayList<Clients>();
 	}
 
-	public int getSize(){
+	public synchronized int getSize(){
 		return clients_list.size();
 	}
 
+<<<<<<< HEAD
 	public int connexion(Clients cli)throws RemoteException{
 		clients_list.add(cli);
 		System.out.println(cli.getName()+" s'est connect�.");
@@ -30,6 +35,31 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 				}
 			}
 		return 100;
+=======
+	public synchronized int connexion(Clients cli)throws RemoteException{
+
+		clients_list.add(cli);
+		System.out.println(cli.getName()+" s'est connect�.");
+
+		return 100;
+
+	}
+
+	public void ready()throws RemoteException{
+		synchronized(this){
+			for(Clients cli : this.clients_list){
+				cli.printString("[INFO] La partie va commencer.");
+			}
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			notify();
+			System.out.println("notify fait");
+			notWait1 = true;
+		}
+>>>>>>> master
 	}
 
 	public void print_clients(){
@@ -56,7 +86,11 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 		synchronized(this){
 			try {
 				//Waiting for clients
-				wait();
+				while(!notWait1){
+					System.out.println("toto");
+					wait();
+				}
+				
 				//Begining of the game
 				
 				for(Clients cli : this.clients_list){
