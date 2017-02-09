@@ -8,9 +8,10 @@ import java.rmi.registry.LocateRegistry;
 
 /* 
  * TODO ce week-end:
- * 		- Gestion du premier tour de chaque manche
- * 		- Modification du thread notify
- * 		- Gestion du menteur et tout pile
+ * 		- Gestion du menteur et tout pile (vérifier mais il me semble que le menteur fonctionne - sam)
+ * 		- Jouer une partie jusqu'à la fin pour tester le gameplay
+ * 		- Afficher les dés aux joueurs
+ * 		- Améliorer les affichages
  */
 
 //Server
@@ -20,8 +21,6 @@ public class Main {
 		try {
 			
 			GameImpl game = new GameImpl();
-			GameControl gc = new GameControl(game, 1);
-			Thread thGC = new Thread(gc);
 			
 			System.out.println("[SERVER ONLINE]");
 			
@@ -30,9 +29,6 @@ public class Main {
 			
 			//Bind url with the shared game object
 			Naming.rebind("game-1", game);
-			
-			//This thread check if there is enough clients to begin
-			thGC.start();
 			
 			//The game wait for the notify of the GC
 			game.round();

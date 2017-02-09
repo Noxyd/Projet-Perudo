@@ -21,23 +21,11 @@ public class GameControl implements Runnable{
 		int size;
 		switch(this.state){
 			case 1 :
-				//Check the number of clients to begin
-				do{
-					size = game.getSize();
-					if(size == NB_MAX_CLIENTS){
-						test = false;
-					}
-				}while(test != false);
-				//The game begin when there is enough clients
-				try {
-					game.ready();
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
+				
 				break;
 				
 			case 2 : 
-				//attente de tours
+				break;
 				
 			default:
 				System.out.println("Etat default");

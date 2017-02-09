@@ -8,7 +8,9 @@ import java.util.ArrayList;
 public class GameImpl extends UnicastRemoteObject implements Game {
 
 	private ArrayList<Clients> clients_list;
-	private boolean notWait1 = false;;
+	private boolean notWait1 = false;
+	
+	private final int NB_MAX_CLIENT = 2;
 
 	public GameImpl() throws RemoteException{
 		super();
@@ -22,28 +24,18 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 	public synchronized int connexion(Clients cli)throws RemoteException{
 
 		clients_list.add(cli);
-		System.out.println(cli.getName()+" s'est connectï¿½.");
-
+		
+		System.out.println(cli.getName()+" s'est connecte.");
+		
+		if(this.getSize() == NB_MAX_CLIENT){
+			
+			notify();
+			notWait1 = true;
+		}
+		
 		return 100;
 
 	}
-
-	public void ready()throws RemoteException{
-		synchronized(this){
-			for(Clients cli : this.clients_list){
-				cli.printString("[INFO] La partie va commencer.");
-			}
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			notify();
-			System.out.println("notify fait");
-			notWait1 = true;
-		}
-	}
-
 
 	public void print_clients(){
 		for(Clients cli : this.clients_list){
@@ -70,22 +62,28 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 			try {
 				//Waiting for clients
 				while(!notWait1){
-					System.out.println("toto");
 					wait();
 				}
-				
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				for(Clients clients : this.clients_list){
+					clients.printString("[INFO] La partie va commencer.");
+				}
 				//Begining of the game
 				
 				for(Clients cli : this.clients_list){
 					cli.ajoutDe5();
-					System.out.println(cli.getDes());
+					System.out.println("Initialisation des dés pour "+cli.getName()+" :\n"+cli.getDes()+"\n");
 				}
 				while(!end_game){
 					//Begening of the round
 					first_player = true;
 					for(Clients cli : this.clients_list){
 						cli.lancerDe();
-						System.out.println(cli.getDes());
+						System.out.println("Dés de "+cli.getName()+" :\n"+cli.getDes()+"\n");
 					}
 					
 					do{
@@ -94,21 +92,21 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 							if(test == false){
 								//Inform clients of the current player
 								for(Clients client : this.clients_list){
-									client.printString("[INFO] C'est au tour de "+cli.getName()+".");
+									client.printString("[INFO] C'est au tour de "+cli.getName()+".\n");
 									if(!first_player){
-										client.printString("Le joueur "+client_precedent.getName()+" a misï¿½ "+(int)mise_precedente.get(0)+" dï¿½s de "+(int)mise_precedente.get(1)+".");
+										client.printString("Le joueur "+client_precedent.getName()+" a misé "+(int)mise_precedente.get(0)+" dé de "+(int)mise_precedente.get(1)+".\n");
 									}
 								}
 
 								//Let the client choose
 								if(first_player){
-									client_choice = cli.choice(round,1,1);
+									client_choice = cli.choice(round,1,1, first_player);
 									first_player = false;
 								} else {
-									client_choice = cli.choice(round,(int)mise_precedente.get(0),(int)mise_precedente.get(1));
+									client_choice = cli.choice(round,(int)mise_precedente.get(0),(int)mise_precedente.get(1),first_player);
 								}
 
-								System.out.println(client_choice);
+								System.out.println("Choix de "+cli.getName()+" : "+client_choice);
 								
 								int choixAnnonce = 0;
 
@@ -129,9 +127,9 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 								else {
 									choixAnnonce = 1; 
 									System.out.println("choix MISE");
-									for(Clients client_message : this.clients_list){
-										client_message.printString(cli.getName()+" a misï¿½ "+client_choice.get(0)+"-"+client_choice.get(1)+".");
-									}
+									/*for(Clients client_message : this.clients_list){
+										client_message.printString(cli.getName()+" a misé "+client_choice.get(0)+"-"+client_choice.get(1)+".");
+									}*/
 								}
 
 								switch (choixAnnonce) {
@@ -146,8 +144,8 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 									if(tab_resultat[1][mise_precedente.get(1)-1] < mise_precedente.get(0) ){
 										//Joueur courant gagne
 										for(Clients cli_annonce : this.clients_list){
-											cli_annonce.printString("Le joueur "+cli.getName()+" a gagnï¿½.");
-											cli_annonce.printString("Le joueur "+client_precedent.getName()+" perd 1 dï¿½.");
+											cli_annonce.printString("Le joueur "+cli.getName()+" a gagné.");
+											cli_annonce.printString("Le joueur "+client_precedent.getName()+" perd 1 dé.");
 										}
 
 										client_precedent.suppDe(1);
@@ -157,7 +155,7 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 									} else {
 										//Joueur courant perd
 										for(Clients cli_annonce : this.clients_list){
-											cli_annonce.printString("PERDU : Le joueur "+cli.getName()+" perd 1 dï¿½.");
+											cli_annonce.printString("PERDU : Le joueur "+cli.getName()+" perd 1 dé.");
 										}
 
 										cli.suppDe(1);
@@ -174,7 +172,7 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 									if(tab_resultat2[1][mise_precedente.get(1)-1] == mise_precedente.get(0) ){
 										//Joueur courant gagne
 										for(Clients cli_annonce : this.clients_list){
-											cli_annonce.printString("Le joueur "+cli.getName()+" a gagnï¿½, il gagne 1 dï¿½ !");
+											cli_annonce.printString("Le joueur "+cli.getName()+" a gagnï¿½, il gagne 1 dé !");
 										}
 
 										client_precedent.ajoutDe1();
@@ -184,7 +182,7 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 									} else {
 										//Joueur courant perd
 										for(Clients cli_annonce : this.clients_list){
-											cli_annonce.printString("PERDU : Le joueur "+cli.getName()+" perd 1 dï¿½.");
+											cli_annonce.printString("PERDU : Le joueur "+cli.getName()+" perd 1 dé.");
 										}
 
 										cli.suppDe(1);
@@ -222,13 +220,11 @@ public class GameImpl extends UnicastRemoteObject implements Game {
 							client.printString("[INFO] Dï¿½but de la manche "+round+".");
 						}
 					}
-
-
-					//End of game
-					System.out.println("Fin de la partie.");
-					for(Clients client : this.clients_list){
-						client.printString("[INFO] Fin de la partie.");
-					}
+				}
+				//End of game
+				System.out.println("Fin de la partie.");
+				for(Clients client : this.clients_list){
+					client.printString("[INFO] Fin de la partie.");
 				}
 			}catch(Exception e){
 
