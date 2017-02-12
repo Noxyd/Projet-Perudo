@@ -8,9 +8,6 @@ import java.rmi.registry.LocateRegistry;
 
 /* 
  * TODO ce week-end:
- * 		- Gestion du menteur et tout pile (vérifier mais il me semble que le menteur fonctionne - sam)
- * 		- Jouer une partie jusqu'à la fin pour tester le gameplay
- * 		- Afficher les dés aux joueurs
  * 		- Améliorer les affichages
  */
 
