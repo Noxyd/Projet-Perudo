@@ -66,7 +66,7 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 			
 			if(current.getState() == false && test == false){
 			//if(test == false){
-				if(current.getSize() <= NBMAX_JOUEURS){
+				if(current.getSize() < NBMAX_JOUEURS){
 					url = BASE_URL+key;
 					try {
 						Naming.rebind(url, current);
