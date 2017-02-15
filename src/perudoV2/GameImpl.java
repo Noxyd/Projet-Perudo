@@ -12,6 +12,7 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 	private ArrayList<Clients> clients_list;
 	private boolean state;
 	private boolean notWait1 = false;
+	private int encore;
 	
 	private final int NB_MAX_CLIENT = 2;
 	private final int NB_ROUND = 5;
@@ -20,60 +21,12 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 		super();
 		this.clients_list = new ArrayList<Clients>();
 		this.state = false;
+		this.encore = 0;
+		
 	}
 	
 	public void run(){
-		GameControl gc = new GameControl(this, 1);
-		Thread thGC = new Thread(gc);
-		
-		thGC.start();
-		
 		this.round();
-	}
-	
-	public int getSize(){
-		return clients_list.size();
-	}
-	
-	public synchronized int connexion(Clients cli)throws RemoteException{
-
-		clients_list.add(cli);
-		
-		System.out.println(cli.getName()+" s'est connecte.");
-		
-		if(this.getSize() == NB_MAX_CLIENT){
-			
-			notify();
-			notWait1 = true;
-		}
-		
-		return 100;
-
-	}
-	
-	public void ready()throws RemoteException{
-		synchronized(this){
-			for(Clients cli : this.clients_list){
-				cli.printString("[INFO] La partie va commencer.");
-			}
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			notify();
-		}
-	}
-	
-	
-	public void print_clients(){
-			for(Clients cli : this.clients_list){
-				try {
-					System.out.println(cli.getName()+" : "+cli.getURL());
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-			}
 	}
 	
 	public void round(){
@@ -133,7 +86,7 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 	
 									//Let the client choose
 									if(first_player){
-										client_choice = cli.choice(round,1,1, first_player);
+										client_choice = cli.choice(round,0,1, first_player);
 										first_player = false;
 									} else {
 										client_choice = cli.choice(round,(int)mise_precedente.get(0),(int)mise_precedente.get(1),first_player);
@@ -144,14 +97,13 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 									int choixAnnonce = 0;
 	
 									
-									if (client_choice.get(0) == 0){
+									if (client_choice.get(0) == 0 && client_choice.size() == 1){
 										System.out.println("choix MENTEUR");
 										choixAnnonce = 2; 
 										for(Clients client_message : this.clients_list){
 											client_message.printString(cli.getName()+" dit MENTEUR !");
 										}
-										System.out.println("choix MENTEUR2");
-									}else if(client_choice.get(0) == 1) {
+									}else if(client_choice.get(0) == 1 && client_choice.size() == 1 ) {
 										choixAnnonce = 3; 
 										for(Clients client_message : this.clients_list){
 											client_message.printString(cli.getName()+" dit TOUT PILE !");
@@ -258,8 +210,12 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 					System.out.println("Fin de la partie.");
 					for(Clients client : this.clients_list){
 						client.printString("[INFO] Fin de la partie.");
+						client.rejouer();
 					}
 					
+					
+					
+					wait();
 					
 				}while(recommencer == true);
 			}catch(Exception e){
@@ -267,6 +223,15 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 			}
 		}
 
+	}
+	
+	public synchronized void encore(){
+		this.encore++;
+		
+		if(this.encore == NB_MAX_CLIENT){
+			this.encore = 0;
+			notify();	
+		}
 	}
 
 	public void resultAdvertise(String j1, String j2, int chx, boolean result){
@@ -334,5 +299,50 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 
 		return tab_res;
 
+	}
+	
+	public int getSize(){
+		return clients_list.size();
+	}
+	
+	public synchronized int connexion(Clients cli)throws RemoteException{
+
+		clients_list.add(cli);
+		
+		System.out.println(cli.getName()+" s'est connecte.");
+		
+		if(this.getSize() == NB_MAX_CLIENT){
+			
+			notify();
+			notWait1 = true;
+		}
+		
+		return 100;
+
+	}
+	
+	public void ready()throws RemoteException{
+		synchronized(this){
+			for(Clients cli : this.clients_list){
+				cli.printString("[INFO] La partie va commencer.");
+			}
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			notify();
+		}
+	}
+	
+	
+	public void print_clients(){
+			for(Clients cli : this.clients_list){
+				try {
+					System.out.println(cli.getName()+" : "+cli.getURL());
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+			}
 	}
 }
