@@ -65,6 +65,7 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 			GameImpl current = liste_parties.get(key);
 			
 			if(current.getState() == false && test == false){
+			//if(test == false){
 				if(current.getSize() <= NBMAX_JOUEURS){
 					url = BASE_URL+key;
 					try {
@@ -91,6 +92,7 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 				GameImpl current = liste_parties.get(key);
 				
 				if(current.getState() == false && test == false){
+				//if( test == false){
 					if(current.getSize() <= NBMAX_JOUEURS){
 						url = BASE_URL+key;
 						try {
