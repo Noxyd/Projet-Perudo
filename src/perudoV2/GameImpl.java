@@ -26,6 +26,11 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 	}
 	
 	public void run(){
+		GameControl gc = new GameControl(this, 1);
+		Thread thGC = new Thread(gc);
+		
+		thGC.start();
+		
 		this.round();
 	}
 	
@@ -62,14 +67,14 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 					
 					for(Clients cli : this.clients_list){
 						cli.ajoutDe5();
-						System.out.println("Initialisation des dï¿½s pour "+cli.getName()+" :\n"+cli.getDes()+"\n");
+						System.out.println("Initialisation des dés pour "+cli.getName()+" :\n"+cli.getDes()+"\n");
 					}
 					while(!end_game){
 						//Begening of the round
 						first_player = true;
 						for(Clients cli : this.clients_list){
 							cli.lancerDe();
-							System.out.println("Dï¿½s de "+cli.getName()+" :\n"+cli.getDes()+"\n");
+							System.out.println("Dés de "+cli.getName()+" :\n"+cli.getDes()+"\n");
 						}
 						
 						do{
@@ -80,7 +85,7 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 									for(Clients client : this.clients_list){
 										client.printString("[INFO] C'est au tour de "+cli.getName()+".\n");
 										if(!first_player){
-											client.printString("Le joueur "+client_precedent.getName()+" a misï¿½ "+(int)mise_precedente.get(0)+" dï¿½ de "+(int)mise_precedente.get(1)+".\n");
+											client.printString("Le joueur "+client_precedent.getName()+" a misé "+(int)mise_precedente.get(0)+" dé(s) de "+(int)mise_precedente.get(1)+".\n");
 										}
 									}
 	
