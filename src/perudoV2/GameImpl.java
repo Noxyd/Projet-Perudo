@@ -126,8 +126,8 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 										if(tab_resultat[1][mise_precedente.get(1)-1] < mise_precedente.get(0) ){
 											//Joueur courant gagne
 											for(Clients cli_annonce : this.clients_list){
-												cli_annonce.printString("Le joueur "+cli.getName()+" a gagnï¿½.");
-												cli_annonce.printString("Le joueur "+client_precedent.getName()+" perd 1 dï¿½.");
+												cli_annonce.printString("Le joueur "+cli.getName()+" a gagné");
+												cli_annonce.printString("Le joueur "+client_precedent.getName()+" perd 1 dé.");
 											}
 	
 											client_precedent.suppDe(1);
@@ -137,7 +137,7 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 										} else {
 											//Joueur courant perd
 											for(Clients cli_annonce : this.clients_list){
-												cli_annonce.printString("PERDU : Le joueur "+cli.getName()+" perd 1 dï¿½.");
+												cli_annonce.printString("PERDU : Le joueur "+cli.getName()+" perd 1 dé.");
 											}
 	
 											cli.suppDe(1);
@@ -157,17 +157,17 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 										if(tab_resultat2[1][mise_precedente.get(1)-1] == mise_precedente.get(0) ){
 											//Joueur courant gagne
 											for(Clients cli_annonce : this.clients_list){
-												cli_annonce.printString("Le joueur "+cli.getName()+" a gagnï¿½, il gagne 1 dï¿½ !");
+												cli_annonce.printString("Le joueur "+cli.getName()+" a gagné, il gagne 1 dé !");
 											}
 	
-											client_precedent.ajoutDe1();
+											cli.ajoutDe1();
 	
 											test = true;
 	
 										} else {
 											//Joueur courant perd
 											for(Clients cli_annonce : this.clients_list){
-												cli_annonce.printString("PERDU : Le joueur "+cli.getName()+" perd 1 dï¿½.");
+												cli_annonce.printString("PERDU : Le joueur "+cli.getName()+" perd 1 dé.");
 											}
 	
 											cli.suppDe(1);
@@ -210,7 +210,7 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 					System.out.println("Fin de la partie.");
 					for(Clients client : this.clients_list){
 						client.printString("[INFO] Fin de la partie.");
-						client.rejouer();
+						
 					}
 					
 					
