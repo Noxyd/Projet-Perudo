@@ -211,5 +211,9 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 		    
 		    return chaine;
 	}
+	
+	public void afficher(String texte){
+		System.out.println(texte);
+	}
 
 }
