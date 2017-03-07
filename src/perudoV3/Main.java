@@ -1,4 +1,4 @@
-package perudoV2;
+package perudoV3;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;

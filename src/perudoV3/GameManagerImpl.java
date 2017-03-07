@@ -1,7 +1,8 @@
-package perudoV2;
+package perudoV3;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 	
 	/* Attributs */
 	private Map<String, GameImpl> liste_parties;
+	private ArrayList<String> annuaire;
 	
 	private final int NBMAX_JOUEURS = 2;
 	private final String BASE_URL = "rmi://localhost:1099/";
@@ -40,6 +42,7 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 	public GameManagerImpl() throws RemoteException {
 		super();
 		liste_parties = new HashMap<String,GameImpl>();
+		this.annuaire = new ArrayList<String>();
 	}
 	
 	
@@ -80,7 +83,7 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 				
 		return url;
 	}
-	public ArrayList<String> recherche_partie_list() throws RemoteException {
+	/*public ArrayList<String> recherche_partie_list() throws RemoteException {
 		 ArrayList<String> list_part = new ArrayList<String>();
 		 String url = "none";
 			//test permet de vérifier qu'une partie a été trouvé dans la Hashmap.
@@ -92,9 +95,9 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 				GameImpl current = liste_parties.get(key);
 				
 				if(current.getState() == false && test == false){
-				//if( test == false){
+				//if(test == false){
 					if(current.getSize() <= NBMAX_JOUEURS){
-						url = BASE_URL+key;
+						url = BASE_URL + key;
 						try {
 							Naming.rebind(url, current);
 						} catch (MalformedURLException e) {
@@ -106,6 +109,33 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 			}
 			
 			return list_part;
+	}*/
+	/* *************************************************** */
+	public ArrayList<String> recherche_partie_list() throws RemoteException {
+		 ArrayList<String> list_part = new ArrayList<String>();
+		 String url = "none";
+			for(int i = 0; i<annuaire.size();i++){
+				Game current;
+				try {
+					current = (Game) Naming.lookup(annuaire.get(i));
+				
+					if(current.getState() == false){
+						if(current.getSize() <= NBMAX_JOUEURS){
+							list_part.add(annuaire.get(i));
+						}
+					}
+				} catch (MalformedURLException | NotBoundException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			return list_part;
+	}
+	
+	
+	public void declarer_partie(String url)throws RemoteException{
+		annuaire.add(url);
+		System.out.println(url+" added.");
 	}
 
 	
@@ -136,6 +166,31 @@ public class GameManagerImpl extends UnicastRemoteObject implements GameManager{
 		Thread thPartie = new Thread(liste_parties.get(id));
 		
 		thPartie.start();
+	}
+	
+	public String creer_partie_client() throws RemoteException{
+		
+		String id = "perudo-";
+		
+		id += generer_chaine();
+		
+		//TODO Penser à vérifier que la chaine n'existe pas deja
+		
+		liste_parties.put(id, new GameImpl());
+		String url = BASE_URL+id;
+		try {
+			Naming.rebind(url, liste_parties.get(id));
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
+		
+		System.out.println("Partie "+url+" crée.");
+		
+		Thread thPartie = new Thread(liste_parties.get(id));
+		
+		thPartie.start();
+		
+		return id;
 	}
 	
 	/**
