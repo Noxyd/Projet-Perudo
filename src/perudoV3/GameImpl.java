@@ -6,16 +6,31 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
+/**
+ * Classe GameImpl.
+ * Classe représentant une partie, c'est ici que s'execute le thread de partie.
+ * 
+ * @author Groupe Garcia, Lesaichot, Tavera - STRI
+ * 
+ */
+
 @SuppressWarnings("serial")
 public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 	
+	//attributs
 	private ArrayList<Clients> clients_list;
 	private boolean state;
 	private boolean notWait1 = false;
 	
+	//Constantes
 	private final int NB_MAX_CLIENT = 2;
 	private final int NB_ROUND = 5;
 	
+	/**
+	 * Le constructeur permet de creer une hashmap contenant l'url (key) de la partie ainsi qu'une Partie (Object).
+	 * 
+	 * @throws RemoteException
+	 */
 	public GameImpl() throws RemoteException{
 		super();
 		this.clients_list = new ArrayList<Clients>();
