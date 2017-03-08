@@ -41,12 +41,7 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 	 * Ouvre un thread pour débuter une partie
 	 * 
 	 */
-	public void run(){
-		GameControl gc = new GameControl(this, 1);
-		Thread thGC = new Thread(gc);
-		
-		thGC.start();
-		
+	public void run(){	
 		this.round();
 	}
 	
@@ -85,7 +80,7 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 	 * 
 	 * @return int 100;
 	 */
-	public void ready()throws RemoteException{
+	/*public void ready()throws RemoteException{
 		synchronized(this){
 			for(Clients cli : this.clients_list){
 				cli.printString("[INFO] La partie va commencer.");
@@ -97,9 +92,13 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 			}
 			notify();
 		}
-	}
+	}*/
 	
 	
+	/**
+	 * Permet d'afficher un client ainsi que son URL.
+	 * 
+	 */
 	public void print_clients(){
 			for(Clients cli : this.clients_list){
 				try {
@@ -110,6 +109,11 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 			}
 	}
 	
+	/**
+	 * Permet de jouer une partie. Cela signifie que le serveur est en mesure d'héberger une partie.
+	 * Tous les traitements de jeux sont effectués au sein de cette méthode.
+	 * 
+	 */
 	public void round(){
 
 		ArrayList<Integer> client_choice;
@@ -150,9 +154,8 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 						first_player = true;
 						for(Clients cli : this.clients_list){
 							cli.lancerDe();
-							System.out.println("D�s de "+cli.getName()+" :\n"+cli.getDes()+"\n");
+							System.out.println("Des de "+cli.getName()+" :\n"+cli.getDes()+"\n");
 						}
-						
 						do{
 							for(Clients cli : this.clients_list){	
 								//Test the end of the round
@@ -195,7 +198,6 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 										choixAnnonce = 1; 
 										System.out.println("choix MISE");
 									}
-	
 									switch (choixAnnonce) {
 									case 1:		//il annonce mise
 										mise_precedente = client_choice;
@@ -257,13 +259,13 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 											test = true;
 										}
 	
-									}	  
-	
+									}//Fin switch	  
+									
 									client_precedent = cli;
 	
-								}
+								}//Fin if
 	
-							}
+							}//Fin for
 							//Test the end of the round 
 						}while(test != true);
 	
@@ -303,7 +305,7 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 
 	}
 
-	public void resultAdvertise(String j1, String j2, int chx, boolean result){
+	/*public void resultAdvertise(String j1, String j2, int chx, boolean result){
 		
 		switch (chx){
 		
@@ -323,16 +325,31 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 				
 		}
 		
-	}
+	}*/
 	
+	
+	/**
+	 * Permet de connaître l'état d'une partie (en cours ou non).
+	 * 
+	 * @return boolean state
+	 */
 	public boolean getState(){
 		return this.state;
 	}
 	
+	/**
+	 * Permet de modifier l'état d'une partie (en cours ou non).
+	 * 
+	 */
 	public void setState(boolean n_state){
 		this.state = n_state;
 	}
 	
+	/**
+	 * Affiche le total des dés en fin de partie
+	 * 
+	 * @return int[][] tab_res
+	 */
 	public int[][] total_des(){
 
 		int[][] tab_res = new int [2][6];
