@@ -1,39 +1,70 @@
 package perudoV3;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameControl implements Runnable{
 	
-	private int state;
 	private GameImpl game;
-	
-	private final int NB_MAX_CLIENTS = 2;
-	
-	public GameControl(GameImpl game, int state){
-		super();
-		this.state = state;
-		this.game = game;
-	}
+	private HashMap<String,Clients> clients_list;
+	String name = "";
+	public Clients retCli,cli;
 
-	@Override
-	public void run() {
-		boolean test = true;
-		int size;
-		switch(this.state){
-			case 1 :
-				
-				break;
-				
-			case 2 : 
-				break;
-				
-			default:
-				System.out.println("Etat default");
+	
+	public GameControl(GameImpl game, ArrayList<Clients> clients_listrecup){
+		super();
+		this.game = game;
+		this.clients_list = new HashMap<>();
+		peuplHashM(clients_listrecup);
+	}
+	
+	private void peuplHashM(ArrayList<Clients> clients_list){
+		for(Clients cli : clients_list){
+			try {
+				this.clients_list.put(cli.getName(),cli);
+			} catch (RemoteException e) {
+			}
 		}
 	}
 	
-	public void setState(int state){
-		this.state = state;
+	@Override
+	public void run() {		
+		
+		while(true){
+			try {
+				quit();
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+			}
+		}
+		
+	}
+	
+	public void quit() throws RemoteException{
+
+		for(String name : clients_list.keySet()){
+			try {
+					this.clients_list.get(name).getName();
+					System.out.println("Le joueur "+ name);
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+					}
+				} catch (RemoteException e1) {
+					System.out.println("Absent(s) "+ name + " a quitté la partie.");
+					this.clients_list.remove(name);
+					game.setRet(name);
+					game.dispEnd();
+
+
+				}	
+		}
 	}
 	
 }
