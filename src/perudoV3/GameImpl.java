@@ -27,7 +27,7 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 	private final int NB_ROUND = 5;
 	
 	/**
-	 * Le constructeur permet de creer une hashmap contenant l'url (key) de la partie ainsi qu'une Partie (Object).
+	 * Le constructeur permet d'initialiser une liste contenant les clients.
 	 * 
 	 * @throws RemoteException
 	 */
@@ -37,6 +37,10 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 		this.state = false;
 	}
 	
+	/**
+	 * Ouvre un thread pour débuter une partie
+	 * 
+	 */
 	public void run(){
 		GameControl gc = new GameControl(this, 1);
 		Thread thGC = new Thread(gc);
@@ -46,10 +50,20 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 		this.round();
 	}
 	
+	/**
+	 * Ouvre un thread pour débuter une partie
+	 * 
+	 * @return clients_list.size();
+	 */
 	public int getSize(){
 		return clients_list.size();
 	}
 	
+	/**
+	 * Permet à un client de s'enregistrer dans une partie.
+	 * 
+	 * @return int 100;
+	 */
 	public synchronized int connexion(Clients cli)throws RemoteException{
 
 		clients_list.add(cli);
@@ -66,6 +80,11 @@ public class GameImpl extends UnicastRemoteObject implements Game, Runnable {
 
 	}
 	
+	/**
+	 * Déclenche le début d'une partie.
+	 * 
+	 * @return int 100;
+	 */
 	public void ready()throws RemoteException{
 		synchronized(this){
 			for(Clients cli : this.clients_list){
